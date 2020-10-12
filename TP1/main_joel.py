@@ -12,7 +12,7 @@ def cria_hit(P):
 
 def cria_valores(P):
     p_copy = np.asarray(P)
-    valores = np.asarray([i for i in range(p_copy.min(), p_copy.max()+1)])
+    valores = np.asarray([i for i in range(p_copy.min(), p_copy.max()+1)],dtype=int)
     print(valores)
     return valores
 
