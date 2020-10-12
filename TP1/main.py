@@ -1,10 +1,28 @@
 import Histograma as hst
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.image as img
+import sounddevice as sd
+from scipy.io import wavfile
 
-PATH = "//data"
 
-teste = [1,2,2,2,64,78,78,2,3,4,5,5,5,5,5,5,5]
+PATH = "data\\"
 
-hst.show_histograma(hst.cria_valores(teste), hst.cria_hist(teste))
+
+"""img = img.imread(PATH + "lena.bmp")
+img = np.asarray(img)
+hst.show_histograma(img)"""
+
+img = img.imread(PATH + "CT1.bmp")
+img = np.asarray(img)
+#print(img[:,:,:3])
+hst.show_histograma(img[:,:,:3])
+
+"""img = img.imread(PATH + "binaria.bmp")
+img = np.asarray(img)
+hst.show_histograma(img)"""
+
+#,sound = wavfile.read(PATH + "saxriff.wav")
+#sound = np.asarray(sound)
+
 
