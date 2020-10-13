@@ -1,12 +1,12 @@
 # TODO:
-- Semana 1:
+### Semana 1:
   - Ex2
   
- - Semana 2:
+### Semana 2:
   - Ex4
   - Ex5
   
-- Semana 3:
+### Semana 3:
   - Ex6
   - Relatório
 
