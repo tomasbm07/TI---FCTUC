@@ -1,7 +1,7 @@
 # TODO:
 ### Semana 1:
 - [x] Ex1
-- [ ] Ex2
+- [x] Ex2
 - [x] Ex3
   
 ### Semana 2:
