@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as img
 import sounddevice as sd
 from scipy.io import wavfile
+from scipy.stats import entropy
 
 PATH = "data\\"
 
@@ -11,6 +12,7 @@ PATH = "data\\"
 def show_histograma(data):
     x, values = np.unique(data, return_counts=True)
     plt.figure(0)
+    plt.annotate(f'H = {entropy(values):.2f} bits/pixel', xy = (0, 0), xycoords=('axes fraction', 'figure fraction'), xytext=(65, 5), textcoords='offset points', size = 12, ha = 'right', va = 'bottom')
     plt.title("Histograma")
     plt.xlabel("Valores")
     plt.ylabel("Repetições")
@@ -39,3 +41,5 @@ def histograma(file):
 		sr, sound = wavfile.read(PATH + "saxriff.wav") #returns Sample Rate and Data
 		sound = np.asarray(sound)
 		show_histograma(sound)
+
+
