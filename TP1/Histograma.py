@@ -36,10 +36,10 @@ def histograma(file):
         if image.ndim == 2:
             show_histograma(image)  # Grayscale
         else:
-            show_histograma(image[:, :, :3])  # RGBA
+            show_histograma(image[:, :, :1])  # RGBA, apenas mostra o canal R
 
     # Sound
     if ".wav" in file:
         sr, sound = wavfile.read(PATH + "saxriff.wav")  # returns Sample Rate and Data
         sound = np.asarray(sound)
-        show_histograma(sound)
+        show_histograma(sound[:, :1]) # Apenas mostra o canal esquerdo do som
