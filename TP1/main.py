@@ -11,8 +11,4 @@ def main():
 	hst.histograma("lena.bmp")
 
 
-
-
-
-
 main()
