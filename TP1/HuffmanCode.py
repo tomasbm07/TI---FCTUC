@@ -9,11 +9,10 @@ import huffmancodec as huff
 PATH = "data\\"
 
 
-def huffmanCode(data):
-	image = np.ndarray(img.imread(PATH + data))
-
-
-	codec = huff.HuffmanCodec.from_data(image)
-	symbols, length = codec.get_code_len()
-	print(symbols)
-	print(length)
+def huffmanCode(file):
+	# Images
+	if ".bmp" in file:
+		image = np.asarray(img.imread(PATH + file))
+		codec = huff.HuffmanCodec.from_data(image[:, :, :1].tobytes())
+		symbols, length = codec.get_code_len()
+		print(f"{entropy(length, base=2):.2f}")
