@@ -12,7 +12,7 @@ PATH = "data\\"
 def show_histograma(data):
     x, values = np.unique(data, return_counts=True)
     plt.figure(0)
-    plt.annotate(f'H = {entropy(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
+    plt.annotate(f'H = {entropy(values, base=2):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
     plt.title("Histograma")
     plt.xlabel("Valores")
