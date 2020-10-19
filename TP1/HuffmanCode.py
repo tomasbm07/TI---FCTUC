@@ -10,10 +10,10 @@ PATH = "data\\"
 
 
 def huffmanCode(data):
-	image = np.ndarray(img.imread(PATH + data))
+	image = np.asarray(img.imread(PATH + data))
 
 
-	codec = huff.HuffmanCodec.from_data(image)
+	codec = huff.HuffmanCodec.from_data(image[:,:,0])
 	symbols, length = codec.get_code_len()
 	print(symbols)
 	print(length)

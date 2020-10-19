@@ -8,7 +8,7 @@ def main():
 	histograma("lena.bmp")
 
 	# Exercicios 4 e 5
-	#huff.huffmanCode("CT1.bmp")
+	huff.huffmanCode("CT1.bmp")
 	
 	
 
