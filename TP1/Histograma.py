@@ -52,7 +52,8 @@ def histograma(file):
     if ".txt" in file:
         file = open(file, "r")
         text = np.asarray(list(file.read()))
-        show_histograma(text,True)
+        #show_histograma(text,True)
+        show_histograma_groups(text)
     # Images
     if ".bmp" in file:
         image = img.imread(file)
@@ -61,7 +62,7 @@ def histograma(file):
             show_histograma(image,file)  # Grayscale
         else:
             show_histograma(image[:, :, :1],False)  # RGBA, apenas mostra o canal R
-            show_histograma_groups(image)
+            #show_histograma_groups(image)
 
             # Sound
     if ".wav" in file:
@@ -70,14 +71,34 @@ def histograma(file):
         show_histograma(sound[:, :1],False) # Apenas mostra o canal esquerdo do som
 
 def alfabeto(data):
+    def alfabeto(data):
     new_data = []
+    for i in range(len(data)):
+        data[i]=str.lower(data[i])
     group=2
-    if (1):
-        for i in range(0,len(data)):
-            for j in range(0, len(data[0]),group):
-                aux = []
-                for _ in range(j,j+group):
-                    aux.append(data[i,_,1])
-                new_data.append(aux)
-    x,values=np.unique(new_data, axis=1,return_counts=True)
+    y,counta = np.unique(data,return_counts=True)
+    i=0
+    while ( i < len(data)):
+        count=0
+        aux=""
+        j=i
+        flag=False
+        while(count<group):
+            if ( 'a'<=data[j]<='z' ) or (  'A'<=data[j]<='Z') or (  '0' <= data[j]<='9'):
+                aux+=str(data[j])
+                count+=1
+            j+=1
+            if (j==len(data)):
+                flag=True
+                break
+        if (flag):
+            break
+        i=j
+        new_data.append(aux)
+    new_data=np.asarray(new_data,dtype=str)
+    for i in new_data:
+        print(i)
+    x,values=np.unique(new_data, axis=0,return_counts=True)
+    print(x)
+    print(entropy(counta,base=2))
     return x,values
