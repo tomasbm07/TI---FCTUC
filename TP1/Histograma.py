@@ -37,10 +37,4 @@ def group_symbols(data):
     print(new_data)
     return gerar_alfabeto(new_data)
 
-  #flatern na leitura
-  #leitura unica
-  #melhoramento de operação em todos os dados de array (exemplo: entropia) !entropia check!
-  #calcular variancia no 4
-  #remover np.uniques//alterar uniques
-  #alterar forma de agrupamento no 5
-  #colocar todos os simbolos no array
+  #melhoramento de operação em todos os dados de array (exemplo: entropia) !entropia check! media check!
