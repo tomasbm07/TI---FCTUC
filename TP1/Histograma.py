@@ -5,6 +5,7 @@ import sounddevice as sd
 from scipy.io import wavfile
 from scipy.stats import entropy
 import math
+
 PATH = "data\\"
 
 #calc entropia com np.log2
@@ -16,7 +17,7 @@ def np_entropia(valores):
     return h
 
 #contar apenas letras do alfabeto regulares e digitos
-def uniques(data):
+def txt_uniques(data):
     symbols = []
     counts = []
     for i in data:
@@ -28,11 +29,12 @@ def uniques(data):
     return np.asarray(symbols,dtype=str), np.asarray(counts,dtype=int)
 
 # Represents a numpy array in a histogram
-def show_histograma(data,flag):
-    if not flag:
-        x, values = np.unique(data, return_counts=True)
-    else:
-        x,values = uniques(data)
+def show_histograma(data,istxt,isbmp):
+    #if not istxt:
+    #    x, values = np.unique(data, return_counts=True)
+    #else:
+    #    x,values = txt_uniques(data)
+    x,values=group_symbols(data,istxt,isbmp)
     plt.figure(0)
     plt.annotate(f'H = {entropy((values),qk=None,base=2):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
@@ -42,42 +44,28 @@ def show_histograma(data,flag):
     plt.bar(x, values, align="center")
     plt.show()
 
-def show_histograma_groups(data,istext,isbmp):
-    x, values = group_symbols(data,istext,isbmp)
-    print(entropy(values,base=2))
-    plt.figure(1)
-    plt.annotate(f'H = {entropy((values),qk=None,base=2):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
-                 xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
-    plt.title("Histograma Groups")
-    plt.xlabel("Valores")
-    plt.ylabel("Repetições")
-    plt.bar(x, values, align="center")
-    plt.show()
 # Selects how to represent each file type
 def histograma(file):
     # Text
     if ".txt" in file:
-        file = open(file, "r")
+        file = open(PATH+file, "r")
         text = np.asarray(list(file.read()))
-        #show_histograma(text,True)
-        show_histograma_groups(text,True,False)
+        show_histograma(text,True,False)
+
     # Images
     if ".bmp" in file:
-        image = img.imread(file)
+        image = img.imread(PATH+file)
         # Check se a imagem é RGBA ou Grayscale
         if image.ndim == 2:
-            #show_histograma(image,file)  # Grayscale
-            show_histograma_groups(image,False,True)
+            show_histograma(image,False,True)  # Grayscale
         else:
-            #show_histograma(image[:, :, :1],False)  # RGBA, apenas mostra o canal R
-            show_histograma_groups(image[:,:,:1],False,True)
+            show_histograma(image[:, :, :1],False,True)  # RGBA, apenas mostra o canal R
 
             # Sound
     if ".wav" in file:
-        sr, sound = wavfile.read("D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP1\\data\\saxriff.wav")  # returns Sample Rate and Data
+        sr, sound = wavfile.read(PATH + "saxriff.wav")  # returns Sample Rate and Data
         sound = np.asarray(sound)
-        show_histograma(sound[:, :1],False) # Apenas mostra o canal esquerdo do som
-        show_histograma_groups(sound[:,:1],False,False)
+        show_histograma(sound[:, :1],False,False) # Apenas mostra o canal esquerdo do som
 
 def get_txt_data(data,group):
     new_data=[]
@@ -133,7 +121,6 @@ def get_sound_data(data,group):
 #return simbolos agrupados//contagem deles
 def group_symbols(data, istxt,isbmp):
     group=2
-    y,counta = np.unique(data, return_counts=True) if ~istxt else uniques(data)
     if (istxt):
         new_data=get_txt_data(data,group)
     elif (isbmp):
@@ -142,5 +129,4 @@ def group_symbols(data, istxt,isbmp):
         new_data=get_sound_data(data,group)
     x,values=np.unique(new_data,return_counts=True)
     print(x)
-    print(entropy(counta,base=2))
     return x,values
