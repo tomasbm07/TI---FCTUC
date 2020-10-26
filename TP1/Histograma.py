@@ -8,13 +8,6 @@ import math
 PATH = "data\\"
 
 
-#calc entropia com np.log2
-def entropia(valores):
-    total = np.sum(valores)
-    prob = valores[valores>0]/total
-    return np.sum(-np.log2(prob)*(prob))
-
-
 # Represents a numpy array in a histogram
 def histograma(x, values):
     plt.figure(0)
@@ -26,16 +19,9 @@ def histograma(x, values):
     plt.bar(x, values, align = "center")
     plt.show()
 
+#calc entropia com np.log2
+def entropia(valores):
+    total = np.sum(valores)
+    prob = valores[valores>0]/total
+    return np.sum(-np.log2(prob)*(prob))
 
-#return simbolos agrupados//contagem deles
-def group_symbols(data, istxt,isbmp):
-    group=2
-    if (istxt):
-        new_data=get_txt_data(data,group)
-    elif (isbmp):
-        new_data=get_bmp_data(data,group)
-    else:
-        new_data=get_sound_data(data,group)
-    x,values=np.unique(new_data,return_counts=True)
-    print(x)
-    return x, values
