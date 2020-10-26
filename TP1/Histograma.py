@@ -5,17 +5,14 @@ import sounddevice as sd
 from scipy.io import wavfile
 from scipy.stats import entropy
 import math
-from main import gerar_alfabeto
 
 PATH = "data\\"
 
 #calc entropia com np.log2
 def entropia(valores):
-    h=0
     total = np.sum(valores)
-    for i in valores:
-        h+=-np.log2(i/total)*(i/total)
-    return h
+    prob = valores[valores>0]/total
+    return np.sum(-np.log2(prob)*prob)
 
 
 # Represents a numpy array in a histogram
