@@ -23,7 +23,7 @@ def huffmanCode(data):
 		text = np.asarray(list(file.read()))
 		codec = huff.HuffmanCodec.from_data(text)
 		symbols2, weight = np.unique(text, return_counts=True)
-		
+
 	elif ".wav" in data:
 		sr, sound = wavfile.read(PATH +data)
 		sound = np.asarray(sound)
@@ -32,3 +32,4 @@ def huffmanCode(data):
 
 	symbols, length = codec.get_code_len()
 	print(np.average(length,weights=weight))
+	print(np.var(length))

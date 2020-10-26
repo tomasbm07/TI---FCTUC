@@ -10,18 +10,16 @@ PATH = "data\\"
 
 #calc entropia com np.log2
 def np_entropia(valores):
-    h=0
     total = np.sum(valores)
-    for i in valores:
-        h+=-np.log2(i/total)*(i/total)
-    return h
+    prob = valores/total
+    return np.sum(-np.log2(prob)*(prob))
 
 #contar apenas letras do alfabeto regulares e digitos
 def txt_uniques(data):
     symbols = []
     counts = []
     for i in data:
-        if ((i not in symbols) and (('a' <= i <='z') or ('0'<= i <= '9') or ('A'<= i <= 'Z'))):
+        if ((i not in symbols) and (('a' <= i <='z') or ('A'<= i <= 'Z'))):
             symbols.append(i)
             counts.append(1)
         elif i in symbols:
@@ -29,14 +27,14 @@ def txt_uniques(data):
     return np.asarray(symbols,dtype=str), np.asarray(counts,dtype=int)
 
 # Represents a numpy array in a histogram
-def show_histograma(data,istxt,isbmp):
+def show_histograma(data):
     #if not istxt:
     #    x, values = np.unique(data, return_counts=True)
     #else:
     #    x,values = txt_uniques(data)
-    x,values=group_symbols(data,istxt,isbmp)
+    x,values=group_symbols(data)
     plt.figure(0)
-    plt.annotate(f'H = {entropy((values),qk=None,base=2):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
+    plt.annotate(f'H = {np_entropia(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
     plt.title("Histograma")
     plt.xlabel("Valores")
@@ -50,22 +48,23 @@ def histograma(file):
     if ".txt" in file:
         file = open(PATH+file, "r")
         text = np.asarray(list(file.read()))
-        show_histograma(text,True,False)
+        show_histograma(text)
 
     # Images
     if ".bmp" in file:
         image = img.imread(PATH+file)
         # Check se a imagem é RGBA ou Grayscale
+        image=np.asarray(image)
         if image.ndim == 2:
-            show_histograma(image,False,True)  # Grayscale
+            show_histograma(image)  # Grayscale
         else:
-            show_histograma(image[:, :, :1],False,True)  # RGBA, apenas mostra o canal R
+            show_histograma(image[:, :, :1])  # RGBA, apenas mostra o canal R
 
             # Sound
     if ".wav" in file:
         sr, sound = wavfile.read(PATH + "saxriff.wav")  # returns Sample Rate and Data
         sound = np.asarray(sound)
-        show_histograma(sound[:, :1],False,False) # Apenas mostra o canal esquerdo do som
+        show_histograma(sound[:, :1]) # Apenas mostra o canal esquerdo do som
 
 def get_txt_data(data,group):
     new_data=[]
@@ -76,7 +75,7 @@ def get_txt_data(data,group):
         aux = ""
         flag = False
         while (count < group):
-            if ('a' <= data[j] <= 'z') or ('A' <= data[j] <= 'Z') or ('0' <= data[j] <= '9'):
+            if ('a' <= data[j] <= 'z') or ('A' <= data[j] <= 'Z'):
                 aux += str(data[j])
                 count += 1
             j += 1
@@ -118,15 +117,25 @@ def get_sound_data(data,group):
         new_data.append(aux)
     return np.asarray(new_data, dtype=str)
 
+
+
+
 #return simbolos agrupados//contagem deles
-def group_symbols(data, istxt,isbmp):
+def group_symbols(data):
+    data=data.flatten()
     group=2
-    if (istxt):
-        new_data=get_txt_data(data,group)
-    elif (isbmp):
-        new_data=get_bmp_data(data,group)
-    else:
-        new_data=get_sound_data(data,group)
+    new_data=[]
+    for i in range(0,int(np.prod(data.shape))-group,group):
+    	new_data.append(data[i:i+group])
+    new_data=np.asarray(new_data)
+    print(new_data)
     x,values=np.unique(new_data,return_counts=True)
-    print(x)
     return x,values
+
+  #flatern na leitura
+  #leitura unica
+  #melhoramento de operação em todos os dados de array (exemplo: entropia) !entropia check!
+  #calcular variancia no 4
+  #remover np.uniques//alterar uniques
+  #alterar forma de agrupamento no 5
+  #colocar todos os simbolos no array
