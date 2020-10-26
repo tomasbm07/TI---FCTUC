@@ -5,26 +5,15 @@ import sounddevice as sd
 from scipy.io import wavfile
 from scipy.stats import entropy
 import math
+from main import gerar_alfabeto
 
 PATH = "data\\"
 
 #calc entropia com np.log2
 def np_entropia(valores):
     total = np.sum(valores)
-    prob = valores/total
+    prob = valores[valores>0]/total
     return np.sum(-np.log2(prob)*(prob))
-
-#contar apenas letras do alfabeto regulares e digitos
-def txt_uniques(data):
-    symbols = []
-    counts = []
-    for i in data:
-        if ((i not in symbols) and (('a' <= i <='z') or ('A'<= i <= 'Z'))):
-            symbols.append(i)
-            counts.append(1)
-        elif i in symbols:
-            counts[symbols.index(i)]+=1
-    return np.asarray(symbols,dtype=str), np.asarray(counts,dtype=int)
 
 # Represents a numpy array in a histogram
 def show_histograma(data):
@@ -129,8 +118,7 @@ def group_symbols(data):
     	new_data.append(data[i:i+group])
     new_data=np.asarray(new_data)
     print(new_data)
-    x,values=np.unique(new_data,return_counts=True)
-    return x,values
+    return gerar_alfabeto(new_data)
 
   #flatern na leitura
   #leitura unica
