@@ -5,6 +5,7 @@ import sounddevice as sd
 from scipy.io import wavfile
 from scipy.stats import entropy
 import huffmancodec as huff
+from Histograma import histograma
 
 PATH = "data\\"
 
@@ -12,12 +13,11 @@ PATH = "data\\"
 def main():
 	# Exercicios 1, 2 e 3
 	# lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	#histograma("binaria.bmp")
+	x, values = gerar_alfabeto("CT1.bmp")
+	histograma(x, values)
 
 	#huff.huffmanCode("lena.bmp")
-	gerar_alfabeto("saxriff.wav")
 	
-
 
 def gerar_alfabeto(file):
 	# Text

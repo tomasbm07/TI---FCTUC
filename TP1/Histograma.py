@@ -10,15 +10,13 @@ PATH = "data\\"
 
 #calc entropia com np.log2
 def entropia(valores):
-    h=0
     total = np.sum(valores)
-    for i in valores:
-        h+=-np.log2(i/total)*(i/total)
-    return h
+    prob = valores[valores>0]/total
+    return np.sum(-np.log2(prob)*(prob))
 
 
 # Represents a numpy array in a histogram
-def show_histograma(x, values):
+def histograma(x, values):
     plt.figure(0)
     plt.annotate(f'H = {entropia(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
