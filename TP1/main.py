@@ -12,7 +12,7 @@ def main():
 	histograma(x, values)
 
 	#huff.huffmanCode("lena.bmp")
-	
+	 
 
 if __name__ == "__main__":
     main()
