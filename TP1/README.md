@@ -5,8 +5,8 @@
 - [x] Ex3
   
 ### Semana 2:
-- [ ] Ex4
-- [ ] Ex5
+- [x] Ex4
+- [x] Ex5
   
 ### Semana 3:
 - [ ] Ex6
