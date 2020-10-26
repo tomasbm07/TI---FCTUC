@@ -12,10 +12,10 @@ PATH = "data\\"
 def main():
 	# Exercicios 1, 2 e 3
 	# lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	#histograma("binaria.bmp")
+	histograma(gerar_alfabeto("saxriff.wav"))
 
 	#huff.huffmanCode("lena.bmp")
-	gerar_alfabeto("saxriff.wav")
+	
 	
 
 
