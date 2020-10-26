@@ -18,7 +18,7 @@ def entropia(valores):
 
 
 # Represents a numpy array in a histogram
-def show_histograma(x, values):
+def histograma(x, values):
     plt.figure(0)
     plt.annotate(f'H = {entropia(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
