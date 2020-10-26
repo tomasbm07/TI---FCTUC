@@ -5,7 +5,7 @@ import sounddevice as sd
 from scipy.io import wavfile
 from scipy.stats import entropy
 import HuffmanCode as huff
-from Histograma import histograma
+from Histograma import histograma,group_symbols
 
 PATH = "data\\"
 
@@ -16,8 +16,8 @@ def main():
 	symbols,counts,informacao=gerar_alfabeto("CT1.bmp")
 
 	#histograma(symbols,counts)
-
-	huff.huffmanCode(informacao,counts)
+	group_symbols(informacao)
+	#huff.huffmanCode(informacao,counts)
 	
 	
 

@@ -27,14 +27,13 @@ def histograma(x, values):
     plt.show()
 
 #return simbolos agrupados//contagem deles
-def group_symbols(data):
-    data=data.flatten()
+def group_symbols(info):
     group=2
-    new_data=[]
-    for i in range(0,int(np.prod(data.shape))-group,group):
-    	new_data.append(data[i:i+group])
-    new_data=np.asarray(new_data)
-    print(new_data)
-    return gerar_alfabeto(new_data)
+    new_info=[]
+    for i in range(0,int(np.prod(info.shape))-group,group):
+    	new_info.append(info[i:i+group])
+    new_info=np.asarray(new_info)
+    print(new_info)
+    return gerar_alfabeto(new_info)
 
   #melhoramento de operação em todos os dados de array (exemplo: entropia) !entropia check! media check!
