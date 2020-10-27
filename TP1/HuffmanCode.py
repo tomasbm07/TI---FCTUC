@@ -15,5 +15,4 @@ def media(length,weight):
 def huffmanCode(info,weight):
 	codec = huff.HuffmanCodec.from_data(info)
 	symbols, length = codec.get_code_len()
-	print(np.average(length,weights=weight[weight>0]))
 	print(media(length,weight[weight>0]))
