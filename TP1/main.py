@@ -1,6 +1,7 @@
 import HuffmanCode as huff
 from Histograma import histograma
 import Funcoes as f
+import MutualInformation as mt 
 
 PATH = "data\\"
 
@@ -16,9 +17,11 @@ def main():
 	#huff.huffmanCode(info, values)
 
 	"""Exercicio 5"""
-	f.group_items(info)
+	f.group_symb(info)
 
 	# Exercicio 6
+	#x2, values2, info2 = f.gerar_alfabeto("target01 - repeat.wav")
+	#mt.shazam(info, info2, x, 1)
 	
 
 if __name__ == "__main__": 

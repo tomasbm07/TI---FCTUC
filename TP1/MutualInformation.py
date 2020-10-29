@@ -12,11 +12,12 @@ PATH = "data\\"
 
 def shazam(querry, target, alfabeto, step):
 	aux_step = 0
-	test_target = target[0:len(querry)]
+	test_target = target[aux_step:len(querry)]
 	mutual_info = np.zeros(len(querry), dtype=int)
-	tabela = np.shape(len(querry), len(querry))
+	tabela = np.zeros(1,dtype=int)
+	tabela.shape(len(querry), len(querry))
 
 	for i in range(len(querry)):
-		for j in range(len(test_target)):
-			
+		tabela[alfabeto==querry[i], alfabeto==querry[i]]+=1
+
 

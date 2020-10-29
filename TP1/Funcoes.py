@@ -25,7 +25,7 @@ def gerar_alfabeto(file):
 			values[x==i] += 1
 
 	# Images
-	elif ".bmp" in file:
+	if ".bmp" in file:
 		info = (img.imread(PATH + file))
 		x = np.asarray([i for i in range(0, 255 + 1)])
 		values = np.zeros(255+1, dtype=int)
@@ -41,7 +41,7 @@ def gerar_alfabeto(file):
 				values[x==i] += 1
 
 	# Sound
-	elif ".wav" in file:
+	if ".wav" in file:
 		sr, sound = wavfile.read(PATH + file)  # returns Sample Rate and data
 		info = np.asarray(sound)
 		x = np.asarray([i for i in range(0, 255 + 1)])
@@ -52,19 +52,29 @@ def gerar_alfabeto(file):
 	
 	return x, values, info
 
-def group_items(info):
+
+def group_symb(info):
+	group = 2
+	new_info = []
+	for i in range(0, int(np.prod(info.shape)) - group, group):
+		new_info.append(info[i:i + group])
+	new_info = np.asarray(new_info)
+	return idk(new_info)
+
+
+def idk(info):
 	info = np.array(info)
-	print(info)
-	x_groups = []
+	x_groups = np.empty(0)
 	for i, j in info:
 		if [i,j] not in x_groups:
-			x_groups.append([i,j])
+			np.append(x_groups, [i,j])
 	x_groups=np.array(sorted(x_groups),dtype=str)
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
 		values[np.where(x_groups==np.asarray([i,j],dtype=str))[0]]+=1
-	#x=np.array([''.join([j for j in i]) for i in x_groups])
+	#x_groups=np.array([''.join([j for j in i]) for i in x_groups])
 	#print(x_groups)
 
+	histograma(x_groups, values)
 
-
+	#return x_groups, values
