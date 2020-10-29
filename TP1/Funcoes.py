@@ -9,13 +9,12 @@ from Histograma import histograma
 
 PATH = "data\\"
 
-
+#gera o alfabeto para cada tipo de imagem
 def gerar_alfabeto(file):
 	# Text
 	if ".txt" in file:
-		
-		file = open(PATH + file, "r")
-		info = np.asarray(list(file.read()))
+		fich = open(PATH + file, "r")
+		info = np.asarray(list(fich.read()))
 
 		x = [chr(i) for i in range(ord('a'), ord('z') + 1)]
 		x += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
@@ -50,13 +49,22 @@ def gerar_alfabeto(file):
 		info=info[:,:1].flatten()
 		for i in info:
 			values[x==i] += 1
-
-	else: # informaçao n vem de nehum ficheiro -> gerar alfabeto de input
-		
-		values=x.zeros
 	
-
 	return x, values, info
+
+def group_items(info):
+	info = np.array(info)
+	print(info)
+	x_groups = []
+	for i, j in info:
+		if [i,j] not in x_groups:
+			x_groups.append([i,j])
+	x_groups=np.array(sorted(x_groups),dtype=str)
+	values=np.zeros(x_groups.shape[0],dtype=int)
+	for i,j in info:
+		values[np.where(x_groups==np.asarray([i,j],dtype=str))[0]]+=1
+	#x=np.array([''.join([j for j in i]) for i in x_groups])
+	#print(x_groups)
 
 
 

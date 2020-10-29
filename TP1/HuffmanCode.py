@@ -8,11 +8,11 @@ import huffmancodec as huff
 
 PATH = "data\\"
 
-def media(length,weight):
+def media(length, weight):
 	mean=length*weight/np.sum(weight)
 	return np.sum(mean)
 
-def huffmanCode(info,weight):
+def huffmanCode(info, weight):
 	codec = huff.HuffmanCodec.from_data(info)
 	symbols, length = codec.get_code_len()
 	print(np.average(length,weights=weight[weight>0]))
