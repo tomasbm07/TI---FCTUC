@@ -71,13 +71,17 @@ def idk(info):
 	dtype = int if 'int' in str(type(info[0,0])) else str
 	x_groups = np.empty([0,2],dtype=dtype)
 	for i, j in info:
-		if [i,j] not in x_groups.tolist():
+		if [i,j] not in x_groups :
 			x_groups=np.append(x_groups, np.array([[i,j]],dtype=dtype), axis=0)
 	#print(x_groups)
 
+	x_groups=np.sort(x_groups)
+	print(x_groups)
+
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
-		values[ (x_groups==np.asarray([i,j],dtype=dtype))[:,0] ]+=1
+		true_rows= np.array( [(x_groups == np.array([i,j], dtype=dtype) )[k,:].all() for k in range( len( x_groups.tolist() ) ) ] , dtype=bool)
+		values[ true_rows ]+=1
 
 	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
