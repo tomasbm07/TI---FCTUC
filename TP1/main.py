@@ -10,9 +10,7 @@ def main():
 	# lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
 	x, values, info = f.gerar_alfabeto("CT1.bmp")
 	x, values, info = f.group_symbols(info)
-	histograma(x, values)
-
-	#huff.huffmanCode(info,values)
+	#huff.huffmanCode(info,vnew_alues)
 	
 
 if __name__ == "__main__":

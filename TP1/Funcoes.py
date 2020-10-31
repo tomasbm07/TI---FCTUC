@@ -9,64 +9,80 @@ from Histograma import histograma
 
 PATH = "data\\"
 
-def group_symbols(info):
-    group=2
-    new_info=[]
-    for i in range(0,int(np.prod(info.shape))-group,group):
-        new_info.append(info[i:i+group])
-    new_info=np.asarray(new_info)
-    return gerar_alfabeto(new_info)
-
+#gera o alfabeto para cada tipo de imagem
 def gerar_alfabeto(file):
-	if type(file) is str:	
-		# Text
-		if ".txt" in file:
-		
-			file = open(PATH + file, "r")
-			info = np.asarray(list(file.read()))
+	# Text
+	if ".txt" in file:
+		fich = open(PATH + file, "r")
+		info = np.asarray(list(fich.read()))
 
-			x = [chr(i) for i in range(ord('a'), ord('z') + 1)]
-			x += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
-			x = np.asarray(x)
-			values = np.zeros(52, dtype=int)
+		x = [chr(i) for i in range(ord('a'), ord('z') + 1)]
+		x += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+		x = np.asarray(x)
+		values = np.zeros(52, dtype=int)
 
+		new_info=info
+		for i in new_info:
+			if ~np.any(x==i):
+				info=np.delete(info, info==i)
+		for i in info:
+			values[x==i] += 1
+
+	# Images
+	if ".bmp" in file:
+		info = (img.imread(PATH + file))
+		x = np.asarray([i for i in range(0, 255 + 1)])
+		values = np.zeros(255+1, dtype=int)
+
+		# Check se a imagem é RGBA ou Grayscale
+		if info.ndim == 2: # Grayscale
+			info=info.flatten()
+			for i in info:
+				values[x==i] += 1  
+		else: # RGBA, apenas mostra o canal R
+			info=info[:,:,:1].flatten()
 			for i in info:
 				values[x==i] += 1
 
-		# Images
-		if ".bmp" in file:
-			info = (img.imread(PATH + file))
-			x = np.asarray([i for i in range(0, 255 + 1)])
-			values = np.zeros(255+1, dtype=int)
-
-			# Check se a imagem é RGBA ou Grayscale
-			if info.ndim == 2: # Grayscale
-				info=info.flatten()
-				for i in info:
-					values[x==i] += 1  
-			else: # RGBA, apenas mostra o canal R
-				info=info[:,:,:1].flatten()
-				for i in info:
-					values[x==i] += 1
-
-		# Sound
-		if ".wav" in file:
-			sr, sound = wavfile.read(PATH + file)  # returns Sample Rate and data
-			info = np.asarray(sound)
-			x = np.asarray([i for i in range(0, 255 + 1)])
-			values = np.zeros(255 + 1, dtype=int)
-			info=info[:,:1].flatten()
-			for i in info:
-				values[x==i] += 1
-	else: # informaçao n vem de nehum ficheiro -> gerar alfabeto de input
-		info = np.array(file, copy=True)
-        x_groups = []
-        for i,j in info:
-            if [i,j] not in x_groups:
-                x_groups.append([i,j])
-        x_groups=np.asarray(sorted(x_groups),dtype=str)
-        values=np.zeros(x_groups.shape[0],dtype=int)
-        for i,j in info:
-            values[np.where(x_groups==np.asarray([i,j],dtype=str))[0]]+=1
-        x=np.array([''.join([j for j in i]) for i in x_groups])
+	# Sound
+	if ".wav" in file:
+		sr, sound = wavfile.read(PATH + file)  # returns Sample Rate and data
+		info = np.asarray(sound)
+		x = np.asarray([i for i in range(0, 255 + 1)])
+		values = np.zeros(255 + 1, dtype=int)
+		info=info[:,:1].flatten()
+		for i in info:
+			values[x==i] += 1
+	
 	return x, values, info
+
+
+def group_symbols(info):
+	group = 2
+	new_info = []
+	for i in range(0, int(np.prod(info.shape)) - group, group):
+		new_info.append(info[i:i + group])
+	new_info = np.asarray(new_info)
+	return idk(new_info)
+
+
+def idk(info):
+	info = np.array(info)
+	dtype = int if 'int' in str(type(info[0,0])) else str
+	x_groups = np.empty([0,2],dtype=dtype)
+	for i, j in info:
+		if [i,j] not in x_groups.tolist():
+			x_groups=np.append(x_groups, np.array([[i,j]],dtype=dtype), axis=0)
+	#print(x_groups)
+
+	values=np.zeros(x_groups.shape[0],dtype=int)
+	for i,j in info:
+		values[ (x_groups==np.asarray([i,j],dtype=dtype))[:,0] ]+=1
+
+	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
+
+	#print(x_groups)
+
+	histograma(x_groups, values)
+
+	return x_groups, values, info
