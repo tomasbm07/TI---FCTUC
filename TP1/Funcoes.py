@@ -70,20 +70,17 @@ def idk(info):
 	info = np.array(info)
 	dtype = int if 'int' in str(type(info[0,0])) else str
 	x_groups = np.empty([0,2],dtype=dtype)
-	print(len(info.tolist()))
-	print(info)
-
 	for i, j in info:
-		isin=np.array( [ ( x_groups == np.array([i,j], dtype=dtype) )[k,:].all() for k in range( len( x_groups.tolist() ) ) ] , dtype=bool)
-		if not isin.any() or len(isin.tolist()) == 0:
+		check = np.all((x_groups==np.array([[i,j]])), axis=1)
+		if ~np.any(check, axis=0) or len(check.tolist())==0:
+		#if [i,j] not in x_groups.tolist():
 			x_groups = np.append(x_groups, np.array([[i, j]], dtype=dtype),axis=0)
 
-	print(x_groups)
 	#x_groups=np.sort(x_groups,axis=1)
+	
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
-		true_rows= np.array( [(x_groups == np.array([i,j], dtype=dtype) )[k,:].all() for k in range( len( x_groups.tolist() ) ) ] , dtype=bool)
-		values[ true_rows ]+=1
+		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
 
 	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
