@@ -55,26 +55,33 @@ def gerar_alfabeto(file):
 
 def group_symb(info):
 	group = 2
-	new_info = []
+	grouped_info = []
 	for i in range(0, int(np.prod(info.shape)) - group, group):
-		new_info.append(info[i:i + group])
-	new_info = np.asarray(new_info)
-	return idk(new_info)
+		grouped_info.append(info[i:i + group])
+	grouped_info = np.asarray(grouped_info)
+	return idk(grouped_info)
 
 
 def idk(info):
 	info = np.array(info)
-	x_groups = np.empty(0)
+	dtype = int if 'int' in str(type(info[0,0])) else str
+	x_groups = np.empty([0,2],dtype=dtype)
 	for i, j in info:
-		if [i,j] not in x_groups:
-			np.append(x_groups, [i,j])
-	x_groups=np.array(sorted(x_groups),dtype=str)
+		if [i,j] not in x_groups :
+			x_groups=np.append(x_groups, np.array([[i,j]],dtype=dtype), axis=0)
+	#print(x_groups)
+
+	x_groups=np.sort(x_groups)
+	#print(x_groups)
+
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
-		values[np.where(x_groups==np.asarray([i,j],dtype=str))[0]]+=1
-	#x_groups=np.array([''.join([j for j in i]) for i in x_groups])
+		true_rows= np.array([(x_groups == np.array([i,j], dtype=dtype))[k,:].all() for k in range(len(x_groups.tolist()))] , dtype=bool)
+		values[true_rows]+=1
+
+	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
+
 	#print(x_groups)
 
 	histograma(x_groups, values)
 
-	#return x_groups, values
