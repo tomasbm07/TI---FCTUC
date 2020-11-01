@@ -57,7 +57,7 @@ def gerar_alfabeto(file):
 	return x, values, info
 
 
-def group_symbols(info):
+def group_symb(info):
 	group = 2
 	new_info = []
 	for i in range(0, int(np.prod(info.shape)) - group, group):
