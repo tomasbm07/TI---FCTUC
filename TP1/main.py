@@ -8,13 +8,13 @@ PATH = "data\\"
 
 def main():
 	#lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	x, values, info = f.gerar_alfabeto("saxriff.wav")
+	x, values, info = f.gerar_alfabeto("texto.txt")
 
 	"""Exercicios 1, 2 e 3"""
 	#histograma(x, values)
 
 	"""Exercicio 4"""
-	#huff.huffmanCode(info, values)
+	huff.huffmanCode(info, values)
 
 	"""Exercicio 5"""
 	#f.group_symb(info)

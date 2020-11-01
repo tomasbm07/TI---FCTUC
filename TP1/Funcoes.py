@@ -21,6 +21,11 @@ def gerar_alfabeto(file):
 		x = np.asarray(x)
 		values = np.zeros(52, dtype=int)
 
+		new_info=info
+		for i in new_info:
+			if ~np.any(x==i):
+				info=np.delete(info, info==i)
+
 		for i in info:
 			values[x==i] += 1
 
@@ -67,21 +72,19 @@ def idk(info):
 	dtype = int if 'int' in str(type(info[0,0])) else str
 	x_groups = np.empty([0,2],dtype=dtype)
 	for i, j in info:
-		if [i,j] not in x_groups :
-			x_groups=np.append(x_groups, np.array([[i,j]],dtype=dtype), axis=0)
-	#print(x_groups)
+		check = np.all((x_groups==np.array([[i,j]])), axis=1)
+		if ~np.any(check, axis=0) or len(check.tolist())==0:
+		#if [i,j] not in x_groups.tolist():
+			x_groups = np.append(x_groups, np.array([[i, j]], dtype=dtype),axis=0)
 
-	x_groups=np.sort(x_groups)
-	#print(x_groups)
-
+	#x_groups=np.sort(x_groups,axis=1)
+	
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
-		true_rows= np.array([(x_groups == np.array([i,j], dtype=dtype))[k,:].all() for k in range(len(x_groups.tolist()))] , dtype=bool)
-		values[true_rows]+=1
+		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
 
 	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
 	#print(x_groups)
 
 	histograma(x_groups, values)
-
