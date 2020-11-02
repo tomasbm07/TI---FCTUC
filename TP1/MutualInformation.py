@@ -15,27 +15,29 @@ def shazam(querry, target, alfabeto, step):
 	mutual_info = np.zeros(len(target) - len(querry) + 1, dtype=float)
 	tabela = np.zeros( ( len( alfabeto ), len( alfabeto ) ), dtype=float)
 	index = 0
-
-	for j in range(0,len(target),step):
+	for j in range(0,len(target)-len(querry)+1,step):
 		#Set the test_target 
 		test_target = target[j:j + len(querry)+1] 
 
-		if len(test_target)<len(querry):
-			break
+		#if len(test_target)<len(querry):
+		#	break
 
 		#Set the repetitions values
 		for i in range( len(querry) ):
-			tabela[ test_target[i]==alfabeto, querry[i]==alfabeto ]+=1
+			tabela[ alfabeto==test_target[i], alfabeto==querry[i] ]+=1
 
 		#Probabilidades
 		tabela[tabela>0] /= len(querry)
+
+
+
 		#Calculate Mutual Information
-		for x in range(len(querry)):
+		for x in querry:
 
-			for y in range(len(test_target) ):
+			for y in test_target:
 
-				if tabela[ x, y] != 0:
-					mutual_info[index] += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
+				if tabela[ alfabeto==x, alfabeto==y ] != 0:
+					mutual_info[index] += ((tabela[alfabeto==x, alfabeto==y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[alfabeto==x, alfabeto==y]) / ( (tabela.sum(axis=1)[alfabeto==x])*(tabela.sum(axis=0)[alfabeto==y]) ) )))
 
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
