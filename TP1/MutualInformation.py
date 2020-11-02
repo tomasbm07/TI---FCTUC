@@ -12,7 +12,7 @@ PATH = "data\\"
 
 
 def shazam(querry, target, alfabeto, step):
-	mutual_info = np.zeros(len(target) - len(querry) + 1, dtype=float)
+	mutual_info = np.zeros( int( np.ceil( (len(target) - len(querry) + 1)/step ) ), dtype=float)
 	tabela = np.zeros( ( len( alfabeto ), len( alfabeto ) ), dtype=float)
 	index = 0
 	for j in range(0,len(target)-len(querry)+1,step):
@@ -30,9 +30,9 @@ def shazam(querry, target, alfabeto, step):
 		tabela[tabela>0] /= len(querry)
 
 		#Calculate Mutual Information
-		for x in alfabeto:
+		for x in range( len(alfabeto) ):
 
-			for y in alfabeto:
+			for y in range( len(alfabeto)):
 
 				if tabela[ x, y ] != 0:
 					mutual_info[index] += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
@@ -40,7 +40,9 @@ def shazam(querry, target, alfabeto, step):
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
 
-	print(mutual_info, len(mutual_info))
+	for _ in mutual_info:
+		print(_)
+	#print(mutual_info, len(mutual_info))
 
 
 
@@ -49,4 +51,4 @@ target = np.asarray([6,8,9,7,2,4,9,9,4,9,1,4,8,0,1,2,2,6,3,2,0,7,4,9,5,4,8,5,2,7
 #print(len(target))
 #alfabeto = np.asarray([0,1,2,3,4,5,6,7,8,9,10], dtype=int)
 alfabeto = np.arange(0,11)
-shazam(querry, target, alfabeto, 1)
+#shazam(querry, target, alfabeto, 1)
