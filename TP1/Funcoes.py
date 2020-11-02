@@ -51,7 +51,12 @@ def gerar_alfabeto(file):
 		info = np.asarray(sound)
 		x = np.asarray([i for i in range(0, 255 + 1)])
 		values = np.zeros(255 + 1, dtype=int)
-		info=info[:,:1].flatten()
+
+		if info.ndim == 2:
+			info=info[:,:1].flatten()
+		else:
+			info=info.flatten()
+
 		for i in info:
 			values[x==i] += 1
 	
@@ -73,7 +78,7 @@ def idk(info):
 	x_groups = np.empty([0,2],dtype=dtype)
 	for i, j in info:
 		check = np.all((x_groups==np.array([[i,j]])), axis=1)
-		if np.any(check, axis=0) or len(check.tolist())==0:
+		if ~np.any(check, axis=0) or len(check.tolist())==0:
 		#if [i,j] not in x_groups.tolist():
 			x_groups = np.append(x_groups, np.array([[i, j]], dtype=dtype),axis=0)
 
@@ -82,7 +87,7 @@ def idk(info):
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
 		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
-		
+
 	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
 	#print(x_groups)

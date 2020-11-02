@@ -8,7 +8,7 @@ PATH = "data\\"
 
 def main():
 	#lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	x, values, info = f.gerar_alfabeto("saxriff.wav")
+	x, values, info = f.gerar_alfabeto("CT1.bmp")
 
 	"""Exercicios 1, 2 e 3"""
 	#histograma(x, values)
@@ -20,10 +20,13 @@ def main():
 	#f.group_symb(info)
 
 	"""Exercicio 6"""
-	x2, values2, info2 = f.gerar_alfabeto("target01 - repeat.wav")
-	mt.shazam(info, info2, x, int(0.25*(len(info2))))
+	#x2, values2, info2 = f.gerar_alfabeto("target01 - repeat.wav")
+	#x2, values2, info2 = f.gerar_alfabeto("target02 - repeatNoise.wav")
+	x2, values2, info2 = f.gerar_alfabeto("Song01.wav")
+
+	mt.shazam(info, info2, x, int(0.25*(len(info))))
+
 
 
 if __name__ == "__main__":
 	main()
-
