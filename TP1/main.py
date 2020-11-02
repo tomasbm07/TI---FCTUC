@@ -14,7 +14,7 @@ def main():
 	histograma(x, values)
 
 	"""Exercicio 4"""
-	#huff.huffmanCode(info, values)
+	huff.huffmanCode(info, values)
 
 	"""Exercicio 5"""
 	#f.group_symb(info)

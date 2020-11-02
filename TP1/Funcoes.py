@@ -81,7 +81,6 @@ def idk(info):
 	
 	values=np.zeros(x_groups.shape[0],dtype=int)
 	for i,j in info:
-		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
 
 	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
