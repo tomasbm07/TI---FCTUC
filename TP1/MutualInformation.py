@@ -13,38 +13,31 @@ PATH = "data\\"
 
 
 def shazam(querry, target, alfabeto, step):
-	alfabeto = np.asarray(alfabeto,  dtype=int)
 	mutual_info = np.zeros(len(target) - len(querry) + 1, dtype=float)
-	tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
+	tabela = np.zeros( ( len( alfabeto ), len( alfabeto ) ), dtype=float)
 	index = 0
-
-
-	for j in range(len(target)-1):
+	for j in range(0,len(target)-len(querry)+1,step):
 		#Set the test_target 
-		test_target = np.asarray(target[j*step:j*step + len(querry)])
-		if len(test_target)<len(querry):
-			break
+		test_target = target[j:j + len(querry)+1] 
+
+		#if len(test_target)<len(querry):
+		#	break
+
 		#Set the repetitions values
 		for i in range(len(querry)):
-			tabela[test_target[i]==alfabeto, querry[i]==alfabeto]+=1
+			tabela[ alfabeto==test_target[i], alfabeto==querry[i] ]+=1
 
-			if i == len(querry)-1:
-				#Probabilidade
-				tabela[tabela>0] /= len(querry)
-				#Calculate Mutual Information
-				for x in range(len(querry)-1):
-					for y in range(len(test_target)-1):
-						if tabela[x,y] != 0:
-							mutual_info[index] += (tabela[x,y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) ))
-							#mutual_info[index] += tabela[x,y] * (math.log2(tabela[x,y]) - (math.log2(tabela.sum(axis=0)[y])) - (math.log2(tabela.sum(axis=1)[x])))
-				
-				print(tabela)
-				print("info: ", mutual_info[index])
-				print("sum: ", tabela.sum())
-				print("\n\n")
+		#Probabilidades
+		tabela[tabela>0] /= len(querry)
 
-				index += 1
-				tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
+		#Calculate Mutual Information
+		for x in range(len(querry)):
+			for y in range(len(test_target)):
+				if tabela[x,y] != 0:
+					mutual_info[index] += ((tabela[x,y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[alfabeto==x, alfabeto==y]) / ( (tabela.sum(axis=1)[alfabeto==x])*(tabela.sum(axis=0)[alfabeto==y]) ) )))
+
+		index += 1
+		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
 
 	print(mutual_info, len(mutual_info))
 
