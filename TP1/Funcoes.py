@@ -50,7 +50,10 @@ def gerar_alfabeto(file):
 		info = np.asarray(sound)
 		x = np.asarray([i for i in range(0, 255 + 1)])
 		values = np.zeros(255 + 1, dtype=int)
-		info=info[:,:1].flatten()
+		if info.ndim == 2:
+			info=info[:,:1].flatten()
+		else:
+			info=info.flatten()
 		for i in info:
 			values[x==i] += 1
 	
