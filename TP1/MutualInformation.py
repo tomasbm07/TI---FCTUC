@@ -29,15 +29,13 @@ def shazam(querry, target, alfabeto, step):
 		#Probabilidades
 		tabela[tabela>0] /= len(querry)
 
-
-
 		#Calculate Mutual Information
-		for x in querry:
+		for x in alfabeto:
 
-			for y in test_target:
+			for y in alfabeto:
 
-				if tabela[ alfabeto==x, alfabeto==y ] != 0:
-					mutual_info[index] += ((tabela[alfabeto==x, alfabeto==y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[alfabeto==x, alfabeto==y]) / ( (tabela.sum(axis=1)[alfabeto==x])*(tabela.sum(axis=0)[alfabeto==y]) ) )))
+				if tabela[ x, y ] != 0:
+					mutual_info[index] += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
