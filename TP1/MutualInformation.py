@@ -10,6 +10,22 @@ from pyitlib import discrete_random_variable as drv
 
 PATH = "data\\"
 
+def plot_it(mutual_information):
+	plt.figure(1)
+	plt.bar(np.arange( len(mutual_information) ).tolist() , mutual_information.tolist())
+	plt.ylabel("Informacao mutua")
+	plt.xlabel("Target_Test_n")
+	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
+                 xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
+	plt.show()
+
+def mutual_information(tabela):
+	mutual_info=0
+	for x in range(len(tabela[:,0])):
+		for y in range(len(tabela[:,1])):
+			if tabela[x,y]!=0:
+				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
+	return mutual_info
 
 def shazam(querry, target, alfabeto, step):
 	mutual_info = np.zeros( int( np.ceil( (len(target) - len(querry) + 1)/step ) ), dtype=float)
@@ -19,9 +35,6 @@ def shazam(querry, target, alfabeto, step):
 		#Set the test_target 
 		test_target = target[j:j + len(querry)+1] 
 
-		#if len(test_target)<len(querry):
-		#	break
-
 		#Set the repetitions values
 		for i in range( len(querry) ):
 			tabela[ alfabeto==test_target[i], alfabeto==querry[i] ]+=1
@@ -30,21 +43,11 @@ def shazam(querry, target, alfabeto, step):
 		tabela[tabela>0] /= len(querry)
 
 		#Calculate Mutual Information
-		for x in range( len(alfabeto) ):
-
-			for y in range( len(alfabeto)):
-
-				if tabela[ x, y ] != 0:
-					mutual_info[index] += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
-
+		mutual_info[index]=mutual_information(tabela)
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
-
-	for _ in mutual_info:
-		print(_)
+	plot_it(mutual_info)
 	#print(mutual_info, len(mutual_info))
-
-
 
 querry = np.asarray([2, 6 ,4 ,10 ,5, 9, 5 ,8, 0, 8], dtype=int)
 target = np.asarray([6,8,9,7,2,4,9,9,4,9,1,4,8,0,1,2,2,6,3,2,0,7,4,9,5,4,8,5,2,7,8,0,7,4,8,5,7,4,3,2,2,7,3,5,2,7,4,9,9,6], dtype=int)
@@ -52,3 +55,5 @@ target = np.asarray([6,8,9,7,2,4,9,9,4,9,1,4,8,0,1,2,2,6,3,2,0,7,4,9,5,4,8,5,2,7
 #alfabeto = np.asarray([0,1,2,3,4,5,6,7,8,9,10], dtype=int)
 alfabeto = np.arange(0,11)
 #shazam(querry, target, alfabeto, 1)
+
+
