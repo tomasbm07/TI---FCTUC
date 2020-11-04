@@ -23,9 +23,13 @@ def media_pesada(length,weight):
 def huffmanCode(info,weight):
 	codec = huff.HuffmanCodec.from_data(info)
 	symbols, length = codec.get_code_len()
-
-	print(variancia( length, np.average(length) ))
-	print(kraft_mcmillan(length))
+	x,y=np.unique(info,return_counts=True)
+	print(entropy(y,base=2))
+	print("entropia", entropia(weight))
+	print(np.average(length, weights=y))
+	print("media", media_pesada(length,weight[weight>0]))
+	#print("var", variancia( length, np.average(length) ))
+	#print(kraft_mcmillan(length))
 
 
 	#print(symbols)

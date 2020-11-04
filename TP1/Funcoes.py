@@ -15,9 +15,9 @@ def gerar_alfabeto(file):
 	if ".txt" in file:
 		fich = open(PATH + file, "r")
 		info = np.asarray(list(fich.read()))
-
-		x = [chr(i) for i in range(ord('a'), ord('z') + 1)]
-		x += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+		x = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+		x += [chr(i) for i in range(ord('a'), ord('z') + 1)]
+		
 		x = np.asarray(x)
 		values = np.zeros(52, dtype=int)
 

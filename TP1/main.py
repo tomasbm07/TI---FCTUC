@@ -8,9 +8,9 @@ PATH = "data\\"
 
 def main():
 	#lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	x, values, info = f.gerar_alfabeto("lena.bmp")
+	x, values, info = f.gerar_alfabeto("texto.txt")
 	"""Exercicios 1, 2 e 3"""
-	#histograma(x, values)
+	histograma(x, values)
 
 	"""Exercicio 4"""
 	
