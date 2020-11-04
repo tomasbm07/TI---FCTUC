@@ -14,6 +14,7 @@ def histograma(x, values):
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
     plt.title("Histograma")
     plt.xlabel("Valores")
+    plt.ylim(0,values.max())
     plt.ylabel("Repetições")
     plt.bar(x, values, align = "center")
     plt.show()
