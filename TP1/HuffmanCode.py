@@ -6,7 +6,6 @@ from scipy.io import wavfile
 from scipy.stats import entropy
 import huffmancodec as huff
 
-PATH = "data\\"
 
 def media(length, weight):
 	mean=length*weight/np.sum(weight)

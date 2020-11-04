@@ -5,7 +5,6 @@ import sounddevice as sd
 from scipy.io import wavfile
 import math
 
-PATH = "data\\"
 
 
 # Represents a numpy array in a histogram
