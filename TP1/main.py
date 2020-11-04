@@ -22,8 +22,6 @@ def main():
 
 	"""Exercicio 6"""
 	songs = ("Song01.wav", "Song02.wav", "Song03.wav", "Song04.wav", "Song05.wav", "Song06.wav", "Song07.wav")
-	#x2, values2, info2 = f.gerar_alfabeto("target01 - repeat.wav")
-	#mt.shazam(info, info2, x, int( 0.25*len(info) ) )
 	mt.compare_MIs(songs)
 
 if __name__ == "__main__": 

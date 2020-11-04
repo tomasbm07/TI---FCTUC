@@ -13,9 +13,10 @@ PATH = "data\\"
 
 def plot_it(mutual_information):
 	plt.figure(1)
-	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, 'o')
+	ticks=np.array([f'Song0{i}' for i in range(1,8)])
 	plt.ylabel("Informacao mutua")
-	plt.xlabel("Song*x")
+	plt.xticks(np.arange(1, len(mutual_information)+1 ), ticks)
+	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, 'o')
 	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
 	plt.show()
@@ -53,8 +54,8 @@ def shazam(querry, target, alfabeto, step):
 def compare_MIs(songs):
 	mt_infos=np.empty(0, dtype=float)
 	x, values, info = f.gerar_alfabeto("saxriff.wav")
-	for i in songs:
-		x2, values2, info2 = f.gerar_alfabeto(i)
+	for i in range(1,8):
+		x2, values2, info2 = f.gerar_alfabeto(f"Song0{i}.wav")
 		mt_infos=np.append(mt_infos, shazam(info, info2, x, int( 0.25*len(info) ) ).max() )
 	plot_it(mt_infos)
 
