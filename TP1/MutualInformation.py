@@ -8,13 +8,6 @@ import huffmancodec as huff
 from Histograma import histograma
 
 
-def cac_mt_info(tabela):
-	mutual_info=0
-	for x in range(len(tabela[:,0])):
-		for y in range(len(tabela[:,1])):
-			if tabela[x,y]!=0:
-				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
-	return mutual_info
 
 def shazam(querry, target, alfabeto, step):
 	mutual_info = np.zeros( int(np.ceil((len(target) - len(querry) + 1)/step) ), dtype=float)
@@ -39,6 +32,15 @@ def shazam(querry, target, alfabeto, step):
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
 
 	print(mutual_info, len(mutual_info))
+	return mutual_info
+
+
+def calc_mt_info(tabela):
+	mutual_info=0
+	for x in range(len(tabela[:,0])):
+		for y in range(len(tabela[:,1])):
+			if tabela[x,y]!=0:
+				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 	return mutual_info
 
 
