@@ -3,17 +3,19 @@ from Histograma import histograma
 import Funcoes as f
 import MutualInformation as mt 
 from scipy.stats import entropy
+from scipy.io import wavfile
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 def main():
 	#lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
-	x, values, info = f.gerar_alfabeto("texto.txt")
+	#file = "texto.txt"
+	#x, values, info = f.gerar_alfabeto(file)
 	#print(f"Entropy(normal) = {entropy(values, base=2)}")
 
 	"""Exercicios 1, 2 e 3"""
-	histograma(x, values)
+	#histograma(x, values, file)
 
 	"""Exercicio 4"""
 	#huff.huffmanCode(info, values)
@@ -22,15 +24,23 @@ def main():
 	#f.group_symb(info)
 
 	"""Exercicio 6"""
-	#idk = []
-	#x, values, info = f.gerar_alfabeto("saxriff.wav") #querry
-	#x2, values2, info2 = f.gerar_alfabeto("target01 - repeat.wav")
-	#x2, values2, info2 = f.gerar_alfabeto("target02 - repeatNoise.wav")
-	#idk = mt.shazam(info, info2, x, int((len(info)/20)))
-	#plt.plot(np.arange(0, len(idk), 1), idk)
-	#plt.show()
+	idk = []
+	x, values, info = f.gerar_alfabeto("saxriff.wav") #querry
+	#targets: "target01 - repeat.wav", "target02 - repeatNoise.wav"
+	target = "target01 - repeat.wav"
+	x2, values2, info2 = f.gerar_alfabeto(target) #target
+	idk = mt.shazam(info, info2, x, int((len(info)/4)))
+
+	sr, data = wavfile.read("data\\"+target)
+	plt.plot(np.arange(0, int(len(info2)/sr), (len(info2)/len(idk))/sr), idk)
+	plt.title(f"Evolução Informação mútua em {target}")
+	plt.xlabel("Tempo(s)")
+	plt.ylabel("Informação Mútua")
+	plt.grid()
+	plt.show()
+
 	#ft, (ax, ax2) = plt.subplots(2, 1, sharex=True)
-	#for i in range(1,8,1):
+	#for i in range(1,8,1):	
 	#	print(f"Song0{i}:")
 	#	x2, values2, info2 = f.gerar_alfabeto(f"Song0{i}.wav")
 	#	idk = mt.shazam(info, info2, x, int(0.25*(len(info))))

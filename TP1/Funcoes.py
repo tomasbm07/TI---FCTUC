@@ -23,6 +23,7 @@ def gerar_alfabeto(file):
 		x = np.asarray(x)
 		values = np.zeros(52, dtype=int)
 		
+		#retirar os carateres a mais do array lido do texto
 		new_info=info
 		for i in new_info:
 			if ~np.any(x==i):
@@ -43,19 +44,20 @@ def gerar_alfabeto(file):
 			for i in info:
 				values[x==i] += 1  
 		else: # RGBA, apenas mostra o canal R
-			info=info[:,:,:1].flatten()
+			info=info[:,:,0].flatten()
 			for i in info:
 				values[x==i] += 1
 
 	# Sound
 	if ".wav" in file:
-		sr, sound = wavfile.read(PATH + file)  # returns Sample Rate and data
+		sr, sound = wavfile.read(PATH + file)  #returns Sample Rate and data
 		info = np.asarray(sound)
 		x = np.asarray([i for i in range(0, 255 + 1)])
 		values = np.zeros(255 + 1, dtype=int)
 
+		#Se for stereo, apenas representar o canal esquerdo
 		if info.ndim == 2:
-			info=info[:,:1].flatten()
+			info=info[:,0].flatten()
 		else:
 			info=info.flatten()
 

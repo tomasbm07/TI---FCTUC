@@ -40,6 +40,8 @@ def shazam(querry, target, alfabeto, step):
 
 	print(mutual_info, len(mutual_info))
 	return mutual_info
+
+
 """
 #Simulação Ex 6a
 idk = []
