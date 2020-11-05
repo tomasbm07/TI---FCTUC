@@ -6,6 +6,7 @@ from scipy.io import wavfile
 from scipy.stats import entropy
 import huffmancodec as huff
 from Histograma import histograma
+import Funcoes as f
 
 
 
@@ -27,7 +28,6 @@ def shazam(querry, target, alfabeto, step):
 
 		#Calculate Mutual Information
 		mutual_info[index]=calc_mt_info(tabela)
-
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
 
@@ -37,15 +37,30 @@ def shazam(querry, target, alfabeto, step):
 
 def calc_mt_info(tabela):
 	mutual_info=0
-	for x in range(len(tabela[:,0])):
-		for y in range(len(tabela[:,1])):
+	for x in range(len(tabela[0,:])):
+		for y in range(len(tabela[:,0])):
 			if tabela[x,y]!=0:
 				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 	return mutual_info
 
 
+def graph_IM(target):
+	im = []
+	x, values, info = f.gerar_alfabeto("saxriff.wav") #querry
+	x2, values2, info2 = f.gerar_alfabeto(target) #target
+	im = shazam(info, info2, x, int((len(info)/4)))
+
+	sr, data = wavfile.read("data\\"+target)
+	plt.plot(np.arange(0, int(len(info2)/sr), (len(info2)/len(im))/sr), im)
+	plt.title(f"Evolução Informação mútua em {target}")
+	plt.xlabel("Tempo(s)")
+	plt.ylabel("Informação Mútua")
+	plt.grid()
+	plt.show()
+
+
 """
-#Simulação Ex 6a
+#Simulação
 idk = []
 #querry = np.asarray([2,6,4,10,5,9,5,8,0,8], dtype=int)
 querry = np.asarray([1,2,3,4,5,6,7,8,9,10], dtype=int)
