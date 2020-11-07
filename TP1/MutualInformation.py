@@ -42,7 +42,7 @@ def calc_mt_info(tabela):
 				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 	return mutual_info
 
-
+#
 def graph_IM(file_target):
 	im = []
 	x, values, querry = f.gerar_alfabeto("saxriff.wav") #querry
@@ -57,7 +57,7 @@ def graph_IM(file_target):
 	plt.grid()
 	plt.show()
 
-#Apresenta os valores da informação mutua maxima entre saxriff.wav e Song*s.wav obtidos em compare_MIs()
+#Apresenta um gráfico pontual com os valores da informação mutua maxima entre saxriff.wav e Song*s.wav obtidos em compare_MIs()
 def plot_it(mutual_information):
 	plt.figure(1)
 	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, 'o')
@@ -65,6 +65,7 @@ def plot_it(mutual_information):
 	plt.xlabel("Song*x")
 	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
+	plt.grid()
 	plt.show()
 
 #Calcula a entropia máxima colocando-a no array entre saxriff.wav e cada Song*.wav

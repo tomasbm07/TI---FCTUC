@@ -20,8 +20,8 @@ def main():
 
 	"""Exercicio 6"""
 	#targets: "target01 - repeat.wav", "target02 - repeatNoise.wav", "Song0x.wav"
-	mt.graph_IM("Song07.wav")
-	#mt.compare_MIs()
+	#mt.graph_IM("Song07.wav")
+	mt.compare_MIs()
 
 
 
