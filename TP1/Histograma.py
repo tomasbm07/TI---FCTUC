@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as img
 import sounddevice as sd
 from scipy.io import wavfile
-import math
 
 
 # Represents a numpy array in a histogram

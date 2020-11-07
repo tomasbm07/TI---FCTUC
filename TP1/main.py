@@ -5,7 +5,7 @@ import MutualInformation as mt
 
 
 def main():
-	#lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
+	#ficheiros: lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
 	#file = "texto.txt"
 	#x, values, info = f.gerar_alfabeto(file)
 
@@ -20,7 +20,7 @@ def main():
 
 	"""Exercicio 6"""
 	#targets: "target01 - repeat.wav", "target02 - repeatNoise.wav", "Song0x.wav"
-	mt.graph_IM("target01 - repeat.wav")
+	mt.graph_IM("target02 - repeatNoise.wav")
 
 
 

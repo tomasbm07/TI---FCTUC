@@ -29,6 +29,7 @@ def gerar_alfabeto(file):
 			if ~np.any(x==i):
 				info=np.delete(info, info==i)
 
+		#Set values(Repetiçoes)
 		for i in info:
 			values[x==i] += 1
 

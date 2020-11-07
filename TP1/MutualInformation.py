@@ -44,15 +44,15 @@ def calc_mt_info(tabela):
 	return mutual_info
 
 
-def graph_IM(target):
+def graph_IM(file_target):
 	im = []
-	x, values, info = f.gerar_alfabeto("saxriff.wav") #querry
-	x2, values2, info2 = f.gerar_alfabeto(target) #target
-	im = shazam(info, info2, x, int((len(info)/4)))
+	x, values, querry = f.gerar_alfabeto("saxriff.wav") #querry
+	x2, values2, target = f.gerar_alfabeto(file_target) #target
+	im = shazam(querry, target, x, int((len(querry)/4)))
 
-	sr, data = wavfile.read("data\\"+target)
-	plt.plot(np.arange(0, int(len(info2)/sr), (len(info2)/len(im))/sr), im)
-	plt.title(f"Evolução Informação mútua em {target}")
+	sr, data = wavfile.read("data\\"+file_target)
+	plt.plot(np.arange(0, int(len(target)/sr), (len(target)/len(im))/sr), im, marker = 'o', markersize=5, markerfacecolor='red')
+	plt.title(f"Evolução Informação mútua em {file_target}")
 	plt.xlabel("Tempo(s)")
 	plt.ylabel("Informação Mútua")
 	plt.grid()

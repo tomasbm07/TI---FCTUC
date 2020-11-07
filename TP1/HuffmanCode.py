@@ -6,7 +6,9 @@ from scipy.io import wavfile
 from scipy.stats import entropy
 import huffmancodec as huff
 from Histograma import entropia
+
 PATH = "data\\"
+
 
 def kraft_mcmillan(length):
 	soma=np.full( len(length), 1/2)**length
