@@ -9,7 +9,7 @@ from Histograma import histograma
 import Funcoes as f
 
 
-#
+#Devolve um array com todas a informação mutua de todas as janelas deslizantes de uma querry e um target, dado um step
 def shazam(querry, target, alfabeto, step):
 	mutual_info = np.zeros( int(np.ceil((len(target) - len(querry) + 1)/step) ), dtype=float)
 	tabela = np.zeros( ( len(alfabeto), len(alfabeto) ), dtype=float)
@@ -30,7 +30,7 @@ def shazam(querry, target, alfabeto, step):
 		index += 1
 		tabela = np.zeros((len(alfabeto), len(alfabeto)), dtype=float)
 
-	print(mutual_info, len(mutual_info))
+	#print(mutual_info, len(mutual_info))
 	return mutual_info
 
 
@@ -42,7 +42,7 @@ def calc_mt_info(tabela):
 				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 	return mutual_info
 
-#
+#Imprime um gráfico com a evolução da informação mutua entre o ficheiro saxriff e outro, ao longo do tempo
 def graph_IM(file_target):
 	im = []
 	x, values, querry = f.gerar_alfabeto("saxriff.wav") #querry
@@ -60,7 +60,7 @@ def graph_IM(file_target):
 #Apresenta um gráfico pontual com os valores da informação mutua maxima entre saxriff.wav e Song*s.wav obtidos em compare_MIs()
 def plot_it(mutual_information):
 	plt.figure(1)
-	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, 'o')
+	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, color='black', marker = 'o', markersize=4, markerfacecolor='red')
 	plt.ylabel("Informacao mutua")
 	plt.xlabel("Song*x")
 	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
@@ -68,7 +68,7 @@ def plot_it(mutual_information):
 	plt.grid()
 	plt.show()
 
-#Calcula a entropia máxima colocando-a no array entre saxriff.wav e cada Song*.wav
+#Calcula a infomacao mutua  entre saxriff.wav e cada Song*.wav, colocando o valor máximo de cada num array mt_infos
 def compare_MIs():
 	mt_infos=np.empty(0, dtype=float)
 	x, values, info = f.gerar_alfabeto("saxriff.wav")
@@ -86,6 +86,7 @@ querry = np.asarray([1,2,3,4,5,6,7,8,9,10], dtype=int)
 target = np.asarray([6,8,9,7,2,4,9,9,4,9 ,1,4,8,0,1,2,1,2,3,4,5,6,7,8,9,10,8,5,2,7,8,0,7,4,8,5,7,4,3,2,2,7,3,5,2,7,4,9,9,6], dtype=int)
 alfabeto = np.asarray([0,1,2,3,4,5,6,7,8,9,10], dtype=int)
 idk = shazam(querry, target, alfabeto, 1)
+
 plt.plot(np.arange(0, 41, 1), idk, color='black', marker = 'o', markersize=4, markerfacecolor='red')
 
 plt.title("Simulação")
