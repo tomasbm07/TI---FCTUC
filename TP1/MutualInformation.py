@@ -59,7 +59,7 @@ def graph_IM(file_target):
 	plt.show()
 
 
-
+"""
 #Simulação
 idk = []
 #querry = np.asarray([2,6,4,10,5,9,5,8,0,8], dtype=int)
@@ -74,3 +74,4 @@ plt.ylabel("Informação Mútua")
 plt.xlabel("nº janela")
 plt.grid()
 plt.show()
+"""
