@@ -51,7 +51,7 @@ def graph_IM(file_target):
 	im = shazam(querry, target, x, int((len(querry)/4)))
 
 	sr, data = wavfile.read("data\\"+file_target)
-	plt.plot(np.arange(0, int(len(target)/sr), (len(target)/len(im))/sr), im, marker = 'o', markersize=5, markerfacecolor='red')
+	plt.plot(np.arange(0, int(len(target)/sr), (len(target)/len(im))/sr), im, color='black', marker = 'o', markersize=5, markerfacecolor='red')
 	plt.title(f"Evolução Informação mútua em {file_target}")
 	plt.xlabel("Tempo(s)")
 	plt.ylabel("Informação Mútua")
@@ -59,7 +59,7 @@ def graph_IM(file_target):
 	plt.show()
 
 
-"""
+
 #Simulação
 idk = []
 #querry = np.asarray([2,6,4,10,5,9,5,8,0,8], dtype=int)
@@ -67,10 +67,10 @@ querry = np.asarray([1,2,3,4,5,6,7,8,9,10], dtype=int)
 target = np.asarray([6,8,9,7,2,4,9,9,4,9 ,1,4,8,0,1,2,1,2,3,4,5,6,7,8,9,10,8,5,2,7,8,0,7,4,8,5,7,4,3,2,2,7,3,5,2,7,4,9,9,6], dtype=int)
 alfabeto = np.asarray([0,1,2,3,4,5,6,7,8,9,10], dtype=int)
 idk = shazam(querry, target, alfabeto, 1)
-plt.plot(np.arange(0, 41, 1), idk)
+plt.plot(np.arange(0, 41, 1), idk, color='black', marker = 'o', markersize=4, markerfacecolor='red')
 
 plt.title("Simulação")
 plt.ylabel("Informação Mútua")
 plt.xlabel("nº janela")
 plt.grid()
-plt.show()"""
+plt.show()
