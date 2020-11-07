@@ -60,9 +60,11 @@ def graph_IM(file_target):
 #Apresenta um gráfico pontual com os valores da informação mutua maxima entre saxriff.wav e Song*s.wav obtidos em compare_MIs()
 def plot_it(mutual_information):
 	plt.figure(1)
-	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, color='black', marker = 'o', markersize=4, markerfacecolor='red')
+	ticks=np.array([f'Song0{i}' for i in range(1,8)])
 	plt.ylabel("Informacao mutua")
-	plt.xlabel("Song*x")
+	plt.xticks(np.arange(1, len(mutual_information)+1 ), ticks)
+	for i in np.arange(1,len(mutual_information) +1 ):
+		plt.plot(i, mutual_information[i-1], color='black', marker = 'o',markersize=5, markerfacecolor='red')
 	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
 	plt.grid()
