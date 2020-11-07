@@ -7,10 +7,10 @@ import MutualInformation as mt
 def main():
 	#ficheiros: lena.bmp, CT1.bmp, binaria.bmp, saxriff.wav, texto.txt
 	file = "CT1.bmp"
-	x, values, info = f.gerar_alfabeto(file)
+	#x, values, info = f.gerar_alfabeto(file)
 
 	"""Exercicios 1, 2 e 3"""
-	histograma(x, values, file)
+	#histograma(x, values, file)
 
 	"""Exercicio 4"""
 	#huff.huffmanCode(info, values)
@@ -20,7 +20,8 @@ def main():
 
 	"""Exercicio 6"""
 	#targets: "target01 - repeat.wav", "target02 - repeatNoise.wav", "Song0x.wav"
-	#mt.graph_IM("target01 - repeat.wav")
+	mt.graph_IM("Song07.wav")
+	#mt.compare_MIs()
 
 
 

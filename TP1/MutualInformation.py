@@ -9,12 +9,11 @@ from Histograma import histograma
 import Funcoes as f
 
 
-
+#
 def shazam(querry, target, alfabeto, step):
 	mutual_info = np.zeros( int(np.ceil((len(target) - len(querry) + 1)/step) ), dtype=float)
 	tabela = np.zeros( ( len(alfabeto), len(alfabeto) ), dtype=float)
 	index = 0
-
 	for j in range(0,len(target)-len(querry)+1,step):
 		#Set the test_target 
 		test_target = target[j:j + len(querry)] 
@@ -57,6 +56,25 @@ def graph_IM(file_target):
 	plt.ylabel("Informação Mútua")
 	plt.grid()
 	plt.show()
+
+#Apresenta os valores da informação mutua maxima entre saxriff.wav e Song*s.wav obtidos em compare_MIs()
+def plot_it(mutual_information):
+	plt.figure(1)
+	plt.plot(np.arange(1, len(mutual_information)+1 ), mutual_information, 'o')
+	plt.ylabel("Informacao mutua")
+	plt.xlabel("Song*x")
+	plt.annotate(f'Max: {mutual_information.max():.02f}', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
+                 xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
+	plt.show()
+
+#Calcula a entropia máxima colocando-a no array entre saxriff.wav e cada Song*.wav
+def compare_MIs():
+	mt_infos=np.empty(0, dtype=float)
+	x, values, info = f.gerar_alfabeto("saxriff.wav")
+	for i in range(1,8):
+		x2, values2, info2 = f.gerar_alfabeto(f"Song0{i}.wav")
+		mt_infos=np.append(mt_infos, shazam(info, info2, x, int( 0.25*len(info) ) ).max() )
+	plot_it(mt_infos)
 
 
 """
