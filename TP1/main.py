@@ -13,16 +13,15 @@ def main():
 	#histograma(x, values)
 
 	"""Exercicio 4"""
-	
-
-	"""Exercicio 5"""
-	#x, values , info = f.group_symb(info)
-
 	#huff.huffmanCode(info, values)
 
+
+	"""Exercicio 5"""
+	x, values , info = f.group_symb(info)
+
 	"""Exercicio 6"""
-	songs = ("Song01.wav", "Song02.wav", "Song03.wav", "Song04.wav", "Song05.wav", "Song06.wav", "Song07.wav")
-	mt.compare_MIs(songs)
+	#songs = ("Song01.wav", "Song02.wav", "Song03.wav", "Song04.wav", "Song05.wav", "Song06.wav", "Song07.wav")
+	#mt.compare_MIs(songs)
 
 if __name__ == "__main__": 
     main()

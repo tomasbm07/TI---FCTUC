@@ -1,20 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.image as img
-import sounddevice as sd
-from scipy.io import wavfile
 
 PATH = "data\\"
 
 
 # Represents a numpy array in a histogram
 def histograma(x, values):
-    plt.figure(0)
-    plt.annotate(f'H = {entropia(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
-                 xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
-    plt.title("Histograma")
+    plt.figure(1)
+    plt.annotate(f'H = {entropia(values):.2f} bits/simbolo', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
+                 xytext=(80, 5), textcoords='offset points', size=12, ha='right', va='bottom')
+    plt.title("Histograma de binaria.bmp")
     plt.xlabel("Valores")
-    plt.ylim(0,values.max())
     plt.ylabel("Repetições")
     plt.bar(x, values, align = "center")
     plt.show()
