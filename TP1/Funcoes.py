@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img
-import sounddevice as sd
 from scipy.io import wavfile
-from scipy.stats import entropy
 import huffmancodec as huff
 from Histograma import histograma
 
@@ -89,10 +87,9 @@ def unique_grouped(info):
 	for i,j in info:
 		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
 
-	x_groups=np.array([''.join([str(j) for j in i]) for i in x_groups],dtype=str)
+	#x_groups=np.array([' '.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
 	#histograma(x_groups, values)
 	#print(f"Entropy(2 a 2) = {entropy(values, base=2)}")
 
-	return x_groups, values, info
 
