@@ -12,7 +12,7 @@
 - [x] Ex6
 
 ### Semana 4:
-- [ ] Relatório
+- [x] Relatório
 
 #### [Link do relatório](https://onedrive.live.comView.aspx?resid=14ADEE51745036AA!605&authkey=!Avn7mxRqc5OJcZE)
  
