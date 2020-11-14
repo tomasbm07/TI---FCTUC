@@ -6,16 +6,17 @@ from scipy.io import wavfile
 
 
 # Represents a numpy array in a histogram
-def histograma(x, values, name):
+def histograma(x, values):
     plt.figure(0)
     plt.annotate(f'H = {entropia(values):.2f} bits/pixel', xy=(0, 0), xycoords=('axes fraction', 'figure fraction'),
                  xytext=(65, 5), textcoords='offset points', size=12, ha='right', va='bottom')
-    plt.title(f"Histograma de {name}")
+    #plt.title(f"Histograma de {name}")
     plt.xlabel("Valores")
     plt.ylim(0,values.max())
     plt.ylabel("Repetições")
     plt.bar(x, values, align = "center")
     plt.show()
+
 
 #calc entropia com np.log2
 def entropia(valores):

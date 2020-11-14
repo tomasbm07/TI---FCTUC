@@ -49,7 +49,7 @@ def gerar_alfabeto(file):
 
 	# Sound
 	if ".wav" in file:
-		sr, sound = wavfile.read(PATH + file)  #returns Sample Rate and data
+		, sound = wavfile.read(PATH + file)  #returns Sample Rate and data
 		info = np.asarray(sound)
 		x = np.asarray([i for i in range(0, 255 + 1)])
 		values = np.zeros(255 + 1, dtype=int)
@@ -74,6 +74,7 @@ def group_symb(info):
 	grouped_info = np.asarray(grouped_info)
 	return unique_grouped(grouped_info)
 
+
 def unique_grouped(info):
 	info = np.array(info)
 	dtype = int if 'int' in str(type(info[0,0])) else str
@@ -87,9 +88,9 @@ def unique_grouped(info):
 	for i,j in info:
 		values=np.where( np.all( (x_groups==np.array( [[i,j]] )) , axis=1) ,values+1,values)
 
-	#x_groups=np.array([' '.join([str(j) for j in i]) for i in x_groups],dtype=str)
+	x_groups=np.array([' '.join([str(j) for j in i]) for i in x_groups],dtype=str)
 
-	#histograma(x_groups, values)
+	histograma(x_groups, values)
 	#print(f"Entropy(2 a 2) = {entropy(values, base=2)}")
 
 

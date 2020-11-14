@@ -39,6 +39,7 @@ def calc_mt_info(tabela):
 				mutual_info += ((tabela[x, y]/tabela.sum()) * (np.log2( (tabela.sum()*tabela[x,y]) / ( (tabela.sum(axis=1)[x])*(tabela.sum(axis=0)[y]) ) )))
 	return mutual_info
 
+
 #Imprime um gráfico com a evolução da informação mutua entre o ficheiro saxriff e outro, ao longo do tempo
 def graph_IM(file_target):
 	im = []
@@ -77,7 +78,7 @@ def compare_MIs():
 	plot_it(mt_infos)
 
 
-
+"""
 #Simulação
 idk = []
 #querry = np.asarray([2,6,4,10,5,9,5,8,0,8], dtype=int)
@@ -93,3 +94,4 @@ plt.ylabel("Informação Mútua")
 plt.xlabel("nº janela")
 plt.grid()
 plt.show()
+"""
