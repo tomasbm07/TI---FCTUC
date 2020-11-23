@@ -18,10 +18,6 @@ def main():
 	"""Exercicio 5"""
 	#f.group_symb(info)
 
-	"""Exercicio 6"""
-	#targets: "target01 - repeat.wav", "target02 - repeatNoise.wav", "Song0x.wav"
-	#mt.graph_IM("target02 - repeatNoise.wav")
-	#mt.compare_MIs()
 
 
 

@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img
+import sounddevice as sd
 from scipy.io import wavfile
+from scipy.stats import entropy
 import huffmancodec as huff
 from Histograma import histograma
 
 PATH = "data\\"
-
 
 #gera o alfabeto para cada tipo de imagem
 def gerar_alfabeto(file):
@@ -14,12 +15,12 @@ def gerar_alfabeto(file):
 	if ".txt" in file:
 		fich = open(PATH + file, "r")
 		info = np.asarray(list(fich.read()))
-
 		x = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 		x += [chr(i) for i in range(ord('a'), ord('z') + 1)]
 		
 		x = np.asarray(x)
 		values = np.zeros(52, dtype=int)
+
 		
 		#retirar os carateres a mais do array lido do texto
 		new_info=info
