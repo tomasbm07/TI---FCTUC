@@ -8,7 +8,7 @@ class lzw_encoder:
         self.next_code = 0
         self.dictionary = dict()
         #for i in range(0,256): #caso normal
-        for i in range(-255,256): # caso diferenças
+        for i in range(0,256): # caso diferenças
             self.add_to_dictionary((i,))
 
     def add_to_dictionary(self, symbol):
@@ -32,31 +32,39 @@ class lzw_encoder:
 
         return ret
 
+    def get_dict_size(self):
+        return len(self.dictionary)
+
 class lzw_decoder:
     def __init__(self):
         self.next_code = 0
         self.dictionary = dict()
-        for i in range(0,255):
-            self.add_to_dictionary(str(i))
-    def add_to_dictionary(self, str):
-        self.dictionary[self.next_code] = str
+        for i in range(0,256):
+            self.add_to_dictionary((i,))
+
+    def add_to_dictionary(self, symbol):
+        self.dictionary[self.next_code] = symbol
         self.next_code = self.next_code + 1
+
     def decode(self, symbols):
         last_symbol = symbols[0]
         ret = np.array([self.dictionary[last_symbol]])
+
         for symbol in symbols[1:]:
             if self.dictionary.get(symbol, -1)!=-1:
                 current = self.dictionary[symbol]
                 previous = self.dictionary[last_symbol]
                 to_add = current[0]
-                self.add_to_dictionary(previous + to_add) #"""problema = 'simbolo anteior' = nr anterior e nao unidade"""
+                self.add_to_dictionary( previous + (to_add,) )
                 ret = np.append(ret, current)
+
             else:
                 previous = self.dictionary[last_symbol]
                 to_add = previous[0]
-                self.add_to_dictionary(previous + to_add)
-                ret=np.append(ret,(previous + to_add))
+                self.add_to_dictionary(previous + (to_add,))
+                ret=np.append(ret,(previous + (to_add,) ) )
             last_symbol = symbol
+
         return ret
 
 def entropia(valores):
