@@ -127,8 +127,8 @@ def decode(array, shape):
 
     decoded = decoded.reshape(shape)
 
-PATH = "D:\\Universidade\\Ano2\\TI\\tp2-meu\\data\\original\\"
-file = "landscape.bmp"
+PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
+file = "pattern.bmp"
 #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
 arr = np.array(img.imread(PATH+file))
