@@ -125,16 +125,17 @@ def decode(array, shape):
         array = array[new_start:]
         decoded = np.append( decoded, row)
 
-    decoded = decoded.reshape(shape)
+    return decoded.reshape(shape)
+
 
 PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
 file = "pattern.bmp"
 #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
 arr = np.array(img.imread(PATH+file))
-#arr = delta_row_by_row(arr)
+arr = delta_row_by_row(arr)
 #arr = delta2_column_by_column(arr)
-arr = delta3(arr)
+#arr = delta3(arr)
 
 #arr = delta(arr)
 #arr = delta2(arr)#
