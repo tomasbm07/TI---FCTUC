@@ -3,11 +3,8 @@ import time
 import numpy as np
 import lzw
 import alfabeto
-import class_lzw
-import class_lz77
-import huffman
-import ctypes
-import pathlib
+import huffman as huff
+import matplotlib.image as img
 
 def alfa(info):
     info = np.array(sorted(info.tolist()), dtype=int)
@@ -21,30 +18,31 @@ def alfa(info):
             probs = np.where(values == i, probs + 1, probs)
     return values, probs
 
-
-def diferencas(info):
-    aux = np.append(np.zeros(1), info[:len(info) - 1])
-    aux = np.array(aux, dtype=int)
-    new_info = info - aux
-
-    x = np.arange(256)
-    values = np.zeros(256, dtype=int)
-    for i in new_info:
-        values[x == i] += 1
-
-    return x, values, new_info
-
-
-def entropia(valores):
-    total = np.sum(valores)
-    prob = valores[valores > 0] / total
-    return np.sum(-np.log2(prob) * (prob))
 def media_pesada(length,weight):
     mean=length*weight/np.sum(weight)
     return np.sum(mean)
 
-random.seed(time.time())
+def write_dat_file(encoded, file):
+    f = open(file,"wb")
+    f.write(bytearray(encoded))
+    f.close()
 
 if __name__ == "__main__":
-    #arr = np.array([random.randint(0, 255) for i in np.arange(50000)], dtype=str)
-    arr = np.array([random.randint(0,255) for i in range(50000)])
+    
+    PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
+    file = "landscape.bmp"
+    #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
+
+    image = np.array(img.imread(PATH+file))
+    image = lzw.deltaRows(image)
+    #arr = lzw.deltaColumns(arr)
+    #arr = lzw.deltaMean(arr)
+
+    #arr = lzw.deltaFlattenRow(arr)
+    #arr = lzw.deltaFlattenColumn(arr)
+
+    encoded, shape_save = lzw.encode(image)
+    print(encoded)
+    #write_dat_file("testar_lzw.dat", encoded)
+    codec = huff.HuffmanCodec.from_data(encoded)
+    table = codec.get_code_table()

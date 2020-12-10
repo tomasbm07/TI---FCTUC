@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.image as img
 import matplotlib.pyplot as plt
 import math
 
@@ -7,7 +6,6 @@ class lzw_encoder:
     def __init__(self):
         self.n = 0
         self.dic = dict()
-        #for i in range(0,256): #caso normal
         for i in range(-255,256): # caso diferenças
             self.add_symb((i,))
 
@@ -31,7 +29,6 @@ class lzw_encoder:
             encoded = np.append(encoded, [self.dic[buffer]])
 
         return encoded
-
 
 class lzw_decoder:
     def __init__(self):
@@ -71,7 +68,7 @@ def entropia(valores):
     prob = valores[valores > 0] / total
     return np.sum(-np.log2(prob) * (prob))
 
-def delta(info):
+def deltaFlattenRow(info):
     shape_Safe=info.shape
     info = info.flatten()
     aux=np.append(np.zeros(1), info[:len(info)-1])
@@ -79,30 +76,32 @@ def delta(info):
     new_info=info-aux
     return new_info.reshape(shape_Safe)# x, values,
 
-def delta_row_by_row(info):
+def deltaRows(info):
     aux = np.zeros(info.shape, dtype=int)
     aux[:,1:]=np.array(info[:,:info.shape[1]-1],dtype=int)
-    new_info = info-aux
+    new_info = info.copy()-aux
     return new_info
 
-def delta2(info):
+def deltaFlattenColumn(info):
     t_info = info.transpose()
     shape_Save = t_info.shape
     t_info = t_info.flatten()
+
     aux = np.append(np.zeros(1), t_info[:len(t_info)-1])
-    aux = np.array(aux, dtype='int16')
+    aux = np.array(aux, dtype=int)
+
     new_info = t_info-aux
     return new_info.reshape(shape_Save).transpose()
 
 
-def delta2_column_by_column(info):
+def deltaColumns(info):
     info = info.transpose()
     aux = np.zeros(info.shape, dtype=int)
     aux[:,1:]=np.array(info[:,:info.shape[1]-1],dtype=int)
     new_info = info-aux
     return new_info.transpose()
 
-def delta3(info):
+def deltaMean(info):
     rdelta = delta_row_by_row(info)
     cdelta = delta2_column_by_column(info)
     info[1:,1:] = (rdelta[1:,1:]+cdelta[1:,1:])/2
@@ -126,22 +125,3 @@ def decode(array, shape):
         decoded = np.append( decoded, row)
 
     return decoded.reshape(shape)
-
-
-PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-file = "pattern.bmp"
-#egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
-
-arr = np.array(img.imread(PATH+file))
-arr = delta_row_by_row(arr)
-#arr = delta2_column_by_column(arr)
-#arr = delta3(arr)
-
-#arr = delta(arr)
-#arr = delta2(arr)#
-
-encoded, shape_save = encode(arr)
-
-decoded = decode(encoded, shape_save)
-
-print(np.all(arr == decoded))
