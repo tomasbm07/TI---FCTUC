@@ -18,9 +18,10 @@ def alfa(info):
             probs = np.where(values == i, probs + 1, probs)
     return values, probs
 
-def media_pesada(length,weight):
-    mean=length*weight/np.sum(weight)
-    return np.sum(mean)
+def transform(img):
+    entropys = [0 for i in range(5)]
+    for i in range(5):
+        pass
 
 def write_dat_file(encoded, file):
     f = open(file,"wb")
@@ -30,19 +31,28 @@ def write_dat_file(encoded, file):
 if __name__ == "__main__":
     
     PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "landscape.bmp"
+    file = "pattern.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
     image = np.array(img.imread(PATH+file))
+    #image = transform(image)
     image = lzw.deltaRows(image)
-    #arr = lzw.deltaColumns(arr)
-    #arr = lzw.deltaMean(arr)
+    #arr = lzw.deltaColumns(image)
+    #arr = lzw.deltaMean(image)
 
     #arr = lzw.deltaFlattenRow(arr)
     #arr = lzw.deltaFlattenColumn(arr)
 
-    encoded, shape_save = lzw.encode(image)
-    print(encoded)
-    #write_dat_file("testar_lzw.dat", encoded)
+    encoded, shape_save = lzw.limited_encode(image)
+    #encoded, shape_save = lzw.encode(image)
+
     codec = huff.HuffmanCodec.from_data(encoded)
     table = codec.get_code_table()
+
+    encoded = huff.encode(encoded, table)
+    
+    write_dat_file(encoded, "teste.dat")
+    #print(encoded)
+    #write_dat_file("testar_lzw.dat", encoded)
+    #codec = huff.HuffmanCodec.from_data(encoded)
+    #table = codec.get_code_table()
