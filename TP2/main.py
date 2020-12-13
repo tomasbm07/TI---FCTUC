@@ -5,6 +5,8 @@ import lzw
 import alfabeto
 import huffman as huff
 import matplotlib.image as img
+import sys
+import scipy.stats as ss
 
 def alfa(info):
     info = np.array(sorted(info.tolist()), dtype=int)
@@ -19,9 +21,21 @@ def alfa(info):
     return values, probs
 
 def transform(img):
-    entropys = [0 for i in range(5)]
-    for i in range(5):
-        pass
+    #1MeanRows 2MeanColumns 3FlattenRow 4FlattenColumns
+    entropys = [ lzw.entropia( np.unique( lzw.deltaRows(img), return_counts=True)[1] ) ,
+                 lzw.entropia( np.unique( lzw.deltaColumns(img), return_counts=True)[1] ) ,
+                 lzw.entropia( np.unique( lzw.deltaFlattenRow(img), return_counts=True)[1] ) ,
+                 lzw.entropia( np.unique( lzw.deltaFlattenColumn(img), return_counts=True)[1] ) ]
+    maxium = entropys.index( max(entropys) )
+    if maxium==0:
+        return lzw.deltaRows(img)
+    elif maxium==1:
+        return lzw.deltaColumns(img)
+    elif maxium==2:
+        return lzw.deltaFlattenRow(img)
+    else:
+        return lzw.deltaFlattenColumn(img)
+
 
 def write_dat_file(encoded, file):
     f = open(file,"wb")
@@ -31,17 +45,12 @@ def write_dat_file(encoded, file):
 if __name__ == "__main__":
     
     PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "pattern.bmp"
+    file = "zebra.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
     image = np.array(img.imread(PATH+file))
     #image = transform(image)
-    image = lzw.deltaRows(image)
-    #arr = lzw.deltaColumns(image)
-    #arr = lzw.deltaMean(image)
-
-    #arr = lzw.deltaFlattenRow(arr)
-    #arr = lzw.deltaFlattenColumn(arr)
+    image = lzw.deltaColumns(image)
 
     encoded, shape_save = lzw.limited_encode(image)
     #encoded, shape_save = lzw.encode(image)
@@ -49,9 +58,11 @@ if __name__ == "__main__":
     codec = huff.HuffmanCodec.from_data(encoded)
     table = codec.get_code_table()
 
+    #print(sys.getsizeof(table))
+
     encoded = huff.encode(encoded, table)
     
-    write_dat_file(encoded, "teste.dat")
+    write_dat_file(encoded, file[:-3]+"dat")
     #print(encoded)
     #write_dat_file("testar_lzw.dat", encoded)
     #codec = huff.HuffmanCodec.from_data(encoded)
