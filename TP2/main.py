@@ -78,11 +78,12 @@ if __name__ == "__main__":
 
     del codec
     #Descodificar a informação comprimida através do algoritmo lzw
-    decoded = np.array(lzw.decode(decoded, shape_save), dtype='uint8')
+    #decoded = np.array(lzw.decode(decoded, shape_save), dtype='uint8')
+    decoded = np.array(lzw.limited_decode(decoded, shape_save), dtype='uint8')
 
     #Reverter a transformação aplicada por deltas nas colunsa
     lzw.reverse_delta(decoded)
 
     print(np.all( decoded == image))
 
-    plt.imsave(file[:-4]+"_decoded.bmp", np.asarray(transformed, dtype='uint8'), cmap='gray')
+    plt.imsave(file[:-4]+"_decoded.bmp", np.asarray(decoded, dtype='uint8'), cmap='gray')
