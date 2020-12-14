@@ -7,6 +7,7 @@ import huffman as huff
 import matplotlib.image as img
 import sys
 import scipy.stats as ss
+import pickle
 
 def alfa(info):
     info = np.array(sorted(info.tolist()), dtype=int)
@@ -29,30 +30,52 @@ def transform(img):
 
 def write_dat_file(encoded, file):
     f = open(file,"wb")
-    f.write(bytearray(encoded))
+    pickle.dump(encoded, f)
     f.close()
+
+def read_file(filename):
+    with open(filename, 'rb') as f:
+        data = pickle.load(f)
+        f.close()
+        return data
 
 if __name__ == "__main__":
     
-    PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "zebra.bmp"
+    PATH = "E:\\UC\\2020-2021\\1º semestre\\TI---FCTUC\\TP2\\"#"D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
+    file = "landscape.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
     image = np.array(img.imread(PATH+file))
     #image = transform(image)
     image = lzw.deltaColumns(image)
 
-    #encoded, shape_save = lzw.limited_encode(image)
-    encoded, shape_save = lzw.encode(image)
+    encoded, shape_save = lzw.limited_encode(image)
+    #encoded, shape_save = lzw.encode(image)
 
     codec = huff.HuffmanCodec.from_data(encoded)
     table = codec.get_code_table()
 
-    #print(sys.getsizeof(table))
+    print(table)
 
-    encoded = huff.encode(encoded, table)
+
+    #encoded = huff.encode(encoded, table)
+
+    write_dat_file(encoded, file[:-4]+".dat")
+
+    encoded2 = read_file(file[:-4]+".dat")
     
-    write_dat_file(encoded, file[:-4]+"_ilimited.dat")
+    encoded2 = huff.decode(encoded, table)
+
+    print(np.all(encoded==encoded2))
+
+    #decoded = lzw.decode(encoded2, shape_save)
+    decoded = lzw.limited_decode(encoded2, shape_save)
+
+    print(  np.all(   decoded==image    )   )
+
+    #lzw.reverse_delta(decoded)
+
+    #print(  np.all(   decoded==image    )   )
     #print(encoded)
     #write_dat_file("testar_lzw.dat", encoded)
     #codec = huff.HuffmanCodec.from_data(encoded)

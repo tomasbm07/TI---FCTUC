@@ -220,3 +220,7 @@ def limited_decode(array, shape):
         decoded = np.append( decoded, row)
 
     return decoded.reshape(shape)
+
+def reverse_delta(encoded):
+    for i in range(1:encode.shape[1]):
+        encoded[:,i] += encoded[:,i-1]

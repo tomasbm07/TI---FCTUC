@@ -343,6 +343,42 @@ def encode(data, table):
 
     return encoded_data
 
+def decode(encoded_data, table):
+    decoded_data = []
+
+    # inverte tabela: mapeia (bitsize, value) para symbols
+    lookup = {(b, v): s for s, (b, v) in table.items()}
+
+    # mascaras para tirar apenas um bit do byte, do mais significativo para o menos
+    masks = [     128,      64,      32,      16,       8,       4,       2,       1]
+    #        10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001
+
+
+    buffer = 0
+    size = 0
+
+    # vou percorrer os bytes codificados
+    for byte in encoded_data:
+
+        # vou tirar bit a bit, do mais significativo para o menos, e juntando ao buffer
+        for m in masks:
+            buffer = (buffer << 1) + bool(byte & m)
+            size += 1
+
+            # se o buffer de bits e o tamanho existirem na tabela, retiro esse simbolo!
+            if (size, buffer) in lookup:
+                symbol = lookup[size, buffer]
+
+                if symbol == _EOF:
+                    print(decoded_data)
+                    return decoded_data
+                
+                decoded_data.append(symbol)
+
+                # reinicio o buffer                
+                buffer = 0
+                size = 0
+                
 if __name__=='__main__':
     arr = np.array([random.randint(0, 255) for i in range(50000)])
     codec = HuffmanCodec.from_data(arr)
@@ -358,5 +394,4 @@ if __name__=='__main__':
     uniquea, ca = np.unique(arr, return_counts=True)
     # unquee, ce = np.unique(encoded,return_counts=True)
 
-    print(np.entropy(ca))
     # print(media_pesada(lenghts, ce[ce>0]))
