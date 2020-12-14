@@ -170,11 +170,9 @@ def deltaFlattenColumn(info):
 
 
 def deltaColumns(info):
-    info = info.transpose()
-    aux = np.zeros(info.shape, dtype=int)
-    aux[:,1:]=np.array(info[:,:info.shape[1]-1],dtype=int)
-    new_info = info-aux
-    return new_info.transpose()
+    aux = np.roll(info, 1, axis = 0)
+    aux[0] = 0
+    return info - aux
 
 def deltaMean(info):
     rdelta = delta_row_by_row(info)
@@ -220,3 +218,7 @@ def limited_decode(array, shape):
         decoded = np.append( decoded, row)
 
     return decoded.reshape(shape)
+
+def reverse_delta(x):
+    for i in range(1,x.shape[0]):
+        x[i,:]+=x[i-1,:]

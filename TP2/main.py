@@ -5,8 +5,10 @@ import lzw
 import alfabeto
 import huffman as huff
 import matplotlib.image as img
+import matplotlib.pyplot as plt
 import sys
 import scipy.stats as ss
+import pickle
 
 def alfa(info):
     info = np.array(sorted(info.tolist()), dtype=int)
@@ -29,31 +31,58 @@ def transform(img):
 
 def write_dat_file(encoded, file):
     f = open(file,"wb")
-    f.write(bytearray(encoded))
+    pickle.dump(encoded,f)
     f.close()
+
+def read_dat_file(file):
+    f = open(file, 'rb')
+    encoded = pickle.load(f)
+    f.close()
+    return encoded
 
 if __name__ == "__main__":
     
     PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "zebra.bmp"
+    file = "pattern.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
+    #Abrir imagem
     image = np.array(img.imread(PATH+file))
-    #image = transform(image)
-    image = lzw.deltaColumns(image)
+
+    #Tranformar imagem por filtro Delta aplicado a colunas
+    transformed = lzw.deltaColumns(image)
 
     #encoded, shape_save = lzw.limited_encode(image)
-    encoded, shape_save = lzw.encode(image)
 
+    #codificar com base no algoritmo LZW, sem limite de dicionario
+    #encoded, shape_save = lzw.encode(transformed)
+    encoded, shape_save = lzw.limited_encode(transformed)
+
+    del transformed
+
+    #Criar tabela de frequencias de huffman
     codec = huff.HuffmanCodec.from_data(encoded)
-    table = codec.get_code_table()
-
-    #print(sys.getsizeof(table))
-
-    encoded = huff.encode(encoded, table)
-    
-    write_dat_file(encoded, file[:-4]+"_ilimited.dat")
-    #print(encoded)
-    #write_dat_file("testar_lzw.dat", encoded)
-    #codec = huff.HuffmanCodec.from_data(encoded)
     #table = codec.get_code_table()
+
+    #Codificar a fonte em codigos de huffman
+    encoded = codec.encode(encoded)
+    
+    #Escrever para o ficheiro, a fonte comprimida
+    write_dat_file(encoded, file[:-4]+".dat")
+
+    #Ler do ficheiro a informação comprimida
+    encoded = read_dat_file(file[:-4]+".dat")
+
+    #Inverter os códigos de huffman
+    decoded = np.array(codec.decode(encoded), dtype = int)
+
+    del codec
+    #Descodificar a informação comprimida através do algoritmo lzw
+    decoded = np.array(lzw.decode(decoded, shape_save), dtype='uint8')
+
+    #Reverter a transformação aplicada por deltas nas colunsa
+    lzw.reverse_delta(decoded)
+
+    print(np.all( decoded == image))
+
+    plt.imsave(file[:-4]+"_decoded.bmp", np.asarray(transformed, dtype='uint8'), cmap='gray')
