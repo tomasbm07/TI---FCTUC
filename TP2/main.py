@@ -22,20 +22,10 @@ def alfa(info):
 
 def transform(img):
     #1MeanRows 2MeanColumns 3FlattenRow 4FlattenColumns
-    entropys = [ lzw.entropia( np.unique( lzw.deltaRows(img), return_counts=True)[1] ) ,
-                 lzw.entropia( np.unique( lzw.deltaColumns(img), return_counts=True)[1] ) ,
-                 lzw.entropia( np.unique( lzw.deltaFlattenRow(img), return_counts=True)[1] ) ,
-                 lzw.entropia( np.unique( lzw.deltaFlattenColumn(img), return_counts=True)[1] ) ]
-    maxium = entropys.index( max(entropys) )
-    if maxium==0:
-        return lzw.deltaRows(img)
-    elif maxium==1:
-        return lzw.deltaColumns(img)
-    elif maxium==2:
-        return lzw.deltaFlattenRow(img)
-    else:
-        return lzw.deltaFlattenColumn(img)
-
+    x1,v1 = np.unique(img, return_counts = True)
+    aux = lzw.deltaColumns(img)
+    x2,v2 = np.unique(aux, return_counts =True)
+    return aux if len(v1)>len(v2) else img
 
 def write_dat_file(encoded, file):
     f = open(file,"wb")
@@ -52,8 +42,8 @@ if __name__ == "__main__":
     #image = transform(image)
     image = lzw.deltaColumns(image)
 
-    encoded, shape_save = lzw.limited_encode(image)
-    #encoded, shape_save = lzw.encode(image)
+    #encoded, shape_save = lzw.limited_encode(image)
+    encoded, shape_save = lzw.encode(image)
 
     codec = huff.HuffmanCodec.from_data(encoded)
     table = codec.get_code_table()
@@ -62,7 +52,7 @@ if __name__ == "__main__":
 
     encoded = huff.encode(encoded, table)
     
-    write_dat_file(encoded, file[:-3]+"dat")
+    write_dat_file(encoded, file[:-4]+"_ilimited.dat")
     #print(encoded)
     #write_dat_file("testar_lzw.dat", encoded)
     #codec = huff.HuffmanCodec.from_data(encoded)
