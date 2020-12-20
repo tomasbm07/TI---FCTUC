@@ -43,7 +43,7 @@ def read_dat_file(file):
 if __name__ == "__main__":
     
     PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "pattern.bmp"
+    file = "egg.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
     #Abrir imagem
@@ -68,10 +68,10 @@ if __name__ == "__main__":
     encoded = codec.encode(encoded)
     
     #Escrever para o ficheiro, a fonte comprimida
-    write_dat_file(encoded, file[:-4]+".dat")
+    write_dat_file(encoded, file[:-4]+"_2.dat")
 
     #Ler do ficheiro a informação comprimida
-    encoded = read_dat_file(file[:-4]+".dat")
+    encoded = read_dat_file(file[:-4]+"_2.dat")
 
     #Inverter os códigos de huffman
     decoded = np.array(codec.decode(encoded), dtype = int)

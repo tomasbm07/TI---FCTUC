@@ -67,7 +67,7 @@ class limited_lzw_encoder:
     def __init__(self):
         self.n = 0
         self.dic = dict()
-        self._max_len = 2**16-1
+        self._max_len = 2**16
         self._flags = np.zeros(self._max_len-512, dtype = 'int8')
         for i in range(-255,256): # caso diferenças
             self.add_symb((i,))
@@ -102,7 +102,7 @@ class limited_lzw_decoder:
     def __init__(self):
         self.next_code = 0
         self.dictionary = dict()
-        self._max_len = 2**16-1
+        self._max_len = 2**16
         self._flags = np.zeros(self._max_len-512, dtype = 'int8')
         for i in range(-255,256):
             self.add_to_dictionary((i,))
