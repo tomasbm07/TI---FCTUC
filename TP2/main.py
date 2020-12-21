@@ -54,7 +54,7 @@ if __name__ == "__main__":
     """     Abrir imagem    """
     image = np.array(img.imread(PATH+file))
 
-    #Tranformar imagem por filtro Delta aplicado a colunas
+    """ Tranformar imagem por filtro Delta aplicado a colunas """
     transformed = lzw.deltaColumns(image)
 
     #codificar com base no algoritmo LZW, com limite de dicionario

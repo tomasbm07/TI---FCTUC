@@ -3,7 +3,6 @@ import matplotlib.image as img
 import matplotlib.pyplot as plt
 import math
 import pickle
-import lzw_other_try
 import huffman as huff
 from collections import deque
 import sys
@@ -108,6 +107,11 @@ def reverse_gray_value(x):
         x ^= mask
     return x
 
+def reverse_gray_transformation(x):
+    func = np.vectorize(reverse_gray_value)
+    new = func(x)
+    return new
+
 """------------------- // ----------------------"""
 
 def block_transform(m):
@@ -164,7 +168,7 @@ def block_transform(m):
     return new, flag_swap
 
 def block_reverse(m, flag):
-	#Todas as possibilidades de blocos binarios
+    #Todas as possibilidades de blocos binarios
     dic = {
         1: ((1,1),(1,1)),
 
@@ -192,22 +196,22 @@ def block_reverse(m, flag):
 
         13: ((0,1),(0,0)),
 
- 		14: ((0,0),(1,0)),
+        14: ((0,0),(1,0)),
 
         15: ((0,0),(0,1)),
 
         16: ((0,0),(0,0))
     }
-
-    new = np.zeros((m.shape[0]*2, m.shape[1]*2), dtype = 'u_int8')
-    for i in range(0, m.shape[0]):
-    	for j in range(0, m.shape[1]):
-    		new[i:i+2,j:j+2] = np.array(dic[m[i,j]], dtype = 'u_int8')
+    
+    new = np.zeros((m.shape[0]*2, m.shape[1]*2), dtype = 'uint16')
+    for i in range(m.shape[0]):
+        for j in range(m.shape[1]):
+            new[2*i:2*i+2,2*j:2*j+2] = np.array(dic[m[i,j]], dtype = 'uint16')
 
     if flag[0] == '1':
-    	new = new[:-1,:]
+        new = new[:-1,:]
     if flag[1] == '1':
-    	new = new[:,:-1]
+        new = new[:,:-1]
     return new
 
 def limited_encode(matrix):
@@ -229,13 +233,27 @@ def limited_decode(matrix, shape):
 
     return decoded.reshape(shape)
 
+def write_dat_file(encoded,flag, file):
+    f = open(file,"wb")
+    pickle.dump(flag, f)
+    pickle.dump(encoded, f)
+    f.close()
+
 def append_dat_file(encoded, file):
     f = open(file,"ab")
     pickle.dump(encoded, f)
     f.close()
 
+def read_dat_file(file):
+    f = open(file, 'rb')
+    encoded = pickle.load(f)
+    f.close()
+    return encoded
+
 def gray_block_lzma_encode(info, file):
     info = gray_transformation(info)
+    shape_save = ( math.ceil( info.shape[0]/2 ), math.ceil( info.shape[1]/2 ) )
+
     i = 1
     while i <= 8:
         encoded = (info&(1<<i))>>i
@@ -243,14 +261,44 @@ def gray_block_lzma_encode(info, file):
         encoded, flag = block_transform(encoded)
 
         encoded = lzma.compress(encoded)
-    
-        write_dat_file(encoded, file) if i==1 else append_dat_file(encoded, file)
+
+        write_dat_file(encoded, shape_save + (flag,) , file) if i==1 else append_dat_file(encoded, file)
         i+=1
 
+def gray_block_lzma_decode(file):
+
+    f = open(file, 'rb')
+    shape_flag = pickle.load(f)
+
+    i = 1
+    while i <= 8:
+        partial_decoded = pickle.load(f)
+
+        #print(len(partial_decoded))
+
+        partial_decoded = np.frombuffer( lzma.decompress(partial_decoded), dtype = 'uint16' ).reshape(shape_flag[0], shape_flag[1])
+
+        partial_decoded = block_reverse(partial_decoded, shape_flag[2])
+
+        if i==1:
+            decoded = partial_decoded.copy()
+        else:
+            decoded += (partial_decoded<<(i-1))
+
+        i+=1
+
+    decoded = reverse_gray_transformation(decoded)
+    f.close()
+    return decoded
+
 PATH = "D:\\Universidade\\Ano2\\TI\\tp2-meu\\data\\original\\"
-file = "pattern.bmp"
+file = "landscape.bmp"
 #egg.bmp    landscape.bmp   pattern.bmp    zebra.bmp
 
 arr = np.array(img.imread(PATH+file))
 
-gray_block_lzma_encode(arr, file[:-4]+".dat")
+#gray_block_lzma_encode(arr, file[:-4]+".dat")
+
+arr2 = gray_block_lzma_decode(file[:-4]+".dat")
+
+print(np.all(arr==arr2))
