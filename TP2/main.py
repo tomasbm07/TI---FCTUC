@@ -29,9 +29,14 @@ def transform(img):
     x2,v2 = np.unique(aux, return_counts =True)
     return aux if len(v1)>len(v2) else img
 
-def write_dat_file(encoded, file):
+def write_dat_file(data, file):
     f = open(file,"wb")
-    pickle.dump(encoded,f)
+    pickle.dump(data,f)
+    f.close()
+
+def append_dat_file(data, file):
+    f = open(file,"ab")
+    pickle.dump(data, f)
     f.close()
 
 def read_dat_file(file):
@@ -43,47 +48,41 @@ def read_dat_file(file):
 if __name__ == "__main__":
     
     PATH = "D:\\Universidade\\Ano2\\TI\\TP1\\TI---FCTUC\\TP2\\"
-    file = "egg.bmp"
+    file = "pattern.bmp"
     #egg.bmp, landscape.bmp, pattern.bmp, zebra.bmp
 
-    #Abrir imagem
+    """     Abrir imagem    """
     image = np.array(img.imread(PATH+file))
 
     #Tranformar imagem por filtro Delta aplicado a colunas
     transformed = lzw.deltaColumns(image)
 
-    #encoded, shape_save = lzw.limited_encode(image)
-
-    #codificar com base no algoritmo LZW, sem limite de dicionario
-    #encoded, shape_save = lzw.encode(transformed)
+    #codificar com base no algoritmo LZW, com limite de dicionario
     encoded, shape_save = lzw.limited_encode(transformed)
 
     del transformed
 
     #Criar tabela de frequencias de huffman
     codec = huff.HuffmanCodec.from_data(encoded)
-    #table = codec.get_code_table()
 
     #Codificar a fonte em codigos de huffman
     encoded = codec.encode(encoded)
     
     #Escrever para o ficheiro, a fonte comprimida
-    write_dat_file(encoded, file[:-4]+"_2.dat")
-
+    write_dat_file(codec.get_code_table(), file[:-4]+".dat")
+    append_dat_file(encoded, file[:-4]+".dat")
     #Ler do ficheiro a informação comprimida
-    encoded = read_dat_file(file[:-4]+"_2.dat")
+    #encoded = read_dat_file(file[:-4]+"_2.dat")
 
     #Inverter os códigos de huffman
-    decoded = np.array(codec.decode(encoded), dtype = int)
+    #decoded = np.array(codec.decode(encoded), dtype = int)
 
     del codec
     #Descodificar a informação comprimida através do algoritmo lzw
     #decoded = np.array(lzw.decode(decoded, shape_save), dtype='uint8')
-    decoded = np.array(lzw.limited_decode(decoded, shape_save), dtype='uint8')
+    #decoded = np.array(lzw.limited_decode(decoded, shape_save), dtype='uint8')
 
     #Reverter a transformação aplicada por deltas nas colunsa
-    lzw.reverse_delta(decoded)
+    #lzw.reverse_delta(decoded)
 
-    print(np.all( decoded == image))
-
-    plt.imsave(file[:-4]+"_decoded.bmp", np.asarray(decoded, dtype='uint8'), cmap='gray')
+    #print(np.all( decoded == image))
