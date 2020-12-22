@@ -254,15 +254,15 @@ def gray_block_lzma_encode(info, file):
     info = gray_transformation(info)
     shape_save = ( math.ceil( info.shape[0]/2 ), math.ceil( info.shape[1]/2 ) )
 
-    i = 1
-    while i <= 8:
+    i = 0
+    while i < 8:
         encoded = (info&(1<<i))>>i
 
         encoded, flag = block_transform(encoded)
 
         encoded = lzma.compress(encoded)
 
-        write_dat_file(encoded, shape_save + (flag,) , file) if i==1 else append_dat_file(encoded, file)
+        write_dat_file(encoded, shape_save + (flag,) , file) if i==0 else append_dat_file(encoded, file)
         i+=1
 
 def gray_block_lzma_decode(file):
@@ -270,8 +270,8 @@ def gray_block_lzma_decode(file):
     f = open(file, 'rb')
     shape_flag = pickle.load(f)
 
-    i = 1
-    while i <= 8:
+    i = 0
+    while i < 8:
         partial_decoded = pickle.load(f)
 
         #print(len(partial_decoded))
@@ -280,10 +280,10 @@ def gray_block_lzma_decode(file):
 
         partial_decoded = block_reverse(partial_decoded, shape_flag[2])
 
-        if i==1:
+        if i==0:
             decoded = partial_decoded.copy()
         else:
-            decoded += (partial_decoded<<(i-1))
+            decoded += (partial_decoded<<i)
 
         i+=1
 
@@ -292,13 +292,12 @@ def gray_block_lzma_decode(file):
     return decoded
 
 PATH = "D:\\Universidade\\Ano2\\TI\\tp2-meu\\data\\original\\"
-file = "landscape.bmp"
+file = "egg.bmp"
 #egg.bmp    landscape.bmp   pattern.bmp    zebra.bmp
 
 arr = np.array(img.imread(PATH+file))
+gray_block_lzma_encode(arr, file[:-4]+".dat")
 
-#gray_block_lzma_encode(arr, file[:-4]+".dat")
 
-arr2 = gray_block_lzma_decode(file[:-4]+".dat")
-
-print(np.all(arr==arr2))
+#arr2 = gray_block_lzma_decode(file[:-4]+".dat")
+#print(np.all(arr==arr2))    
