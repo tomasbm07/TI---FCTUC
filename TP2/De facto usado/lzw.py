@@ -53,7 +53,7 @@ class lzw_decoder:
 
     def decode(self, symbols, shape):
         last_symbol = symbols[0]
-        ret = np.array([self.dictionary[last_symbol]])
+        ret = np.array(self.dictionary[last_symbol])
 
         n = 1
         while len(ret)< shape[1]:

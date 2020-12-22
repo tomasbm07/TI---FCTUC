@@ -20,10 +20,13 @@ if __name__ == '__main__':
 
 
     try:
-    	image = np.array(img.imread(PATH+file))
+    	image = np.array(img.imread(PATH+file), dtype = int)
     except:
     	print("Erro\n")
     	quit()
+
+    """		Compressão		"""
+    #"""
     #Delta filter aplicado a cada coluna isoladamente
     transformed = transform.deltaColumns(image)
     del image
@@ -40,3 +43,27 @@ if __name__ == '__main__':
 
     #Guarda o dicionario de huffman, bem como as dimensões da imagem, e depois o array comprimido
     write_to_encoded( codec.get_code_table(), shape_save, encoded, file[:-4]+".dat")
+	#"""
+    """		Verificar decoded == dataset original, já com ficheiro comprimido	"""
+    """
+    f = open(file[:-4]+".dat", "rb")
+    transformed = transform.deltaColumns(image)
+
+    _EOF = huff.huffmancodec._EndOfFileSymbol()
+    codec = huff.huffmancodec.HuffmanCodec( pickle.load(f) )
+
+    shape = pickle.load(f)
+
+    encoded = pickle.load(f)
+
+    encoded = np.array(codec.decode(encoded), dtype = int)
+
+    decoded = lzw.decode(encoded, shape)
+    del encoded
+
+    decoded = transform.reverse_deltaColumns(np.array(decoded, dtype = int))
+
+    print(np.all(decoded == image))
+
+    #print('\n', image)
+    """

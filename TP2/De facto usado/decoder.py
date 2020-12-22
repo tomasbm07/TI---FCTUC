@@ -33,15 +33,15 @@ if __name__ == '__main__':
     #Lê a imagem comprimida
     encoded = pickle.load(f)
 
-    #Descodifica os códigos de huffman
-    encoded = codec.decode(encoded)
+    #Descodifica os códigos de huffman, sendo a informação guardada num array numpy
+    encoded = np.array(codec.decode(encoded), dtype = int)
 
     #Descomprime a compressão de lzw
     decoded = lzw.decode(encoded, shape)
     del encoded
 
     #Reverte a Transformada
-    transform.reverse_deltaColumns(decoded)
+    decoded = transform.reverse_deltaColumns(decoded)
 
-    #plt.imsave(file[:-4]+".bmp", np.array(decoded, dtype = 'uint8'), cmap = 'gray')
+    plt.imsave(file[:-4]+".png", np.array(decoded, dtype = 'uint8'), cmap = 'gray')
 
