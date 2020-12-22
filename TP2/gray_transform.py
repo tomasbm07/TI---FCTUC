@@ -13,7 +13,7 @@ class limited_lzw_encoder:
         self.n = 0
         self.resets = 0        
         self.dic = dict()
-        self._max_len = 2**16-1
+        self._max_len = 2**14
         for i in range(1,16+1):
             self.add_symb((i,))
 
@@ -262,7 +262,7 @@ def gray_block_lzma_encode(info, file):
 
         encoded = lzma.compress(encoded)
 
-        write_dat_file(encoded, shape_save + (flag,) , file) if i==0 else append_dat_file(encoded, file)
+        write_dat_file(encoded, shape_save + (flag,), file) if i==0 else append_dat_file(encoded, file)
         i+=1
 
 def gray_block_lzma_decode(file):
@@ -291,12 +291,28 @@ def gray_block_lzma_decode(file):
     f.close()
     return decoded
 
+def gray_block_lzw_huff_encode(info, file):
+    info = gray_transformation(info)
+    shape_save = ( math.ceil( info.shape[0]/2 ), math.ceil( info.shape[1]/2 ) )
+
+    i = 0
+    while i < 8:
+        encoded = (info&(1<<i))>>i
+
+        encoded, flag = block_transform(encoded)
+
+        encoded = lzma.compress(encoded)
+
+        write_dat_file(encoded, shape_save + (flag,), file) if i==0 else append_dat_file(encoded, file)
+        i+=1
+
+
 PATH = "D:\\Universidade\\Ano2\\TI\\tp2-meu\\data\\original\\"
-file = "egg.bmp"
+file = "zebra.bmp"
 #egg.bmp    landscape.bmp   pattern.bmp    zebra.bmp
 
 arr = np.array(img.imread(PATH+file))
-gray_block_lzma_encode(arr, file[:-4]+".dat")
+gray_block_lzma_encode(arr, file[:-4]+"_without_block.dat")
 
 
 #arr2 = gray_block_lzma_decode(file[:-4]+".dat")
