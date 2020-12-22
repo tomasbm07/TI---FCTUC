@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.image as img
 import matplotlib.pyplot as plt
-import huffmancodec as huff
+import dahuffman.huffmancodec as huff
 import pickle
 import lzw
 import transform
@@ -43,5 +43,5 @@ if __name__ == '__main__':
     #Reverte a Transformada
     transform.reverse_deltaColumns(decoded)
 
-    plt.imsave(file[:-4]+".bmp", np.array(decoded, dtype = 'uint8'), cmap = 'gray')
+    #plt.imsave(file[:-4]+".bmp", np.array(decoded, dtype = 'uint8'), cmap = 'gray')
 
